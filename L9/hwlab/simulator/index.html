@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="static/css/styles.css">
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+        <script src="static/js/ubit_setup.js"></script>
+    </head>
+
+    <body>
+    <p>
+      You can execute any Python code. Just enter something in the box below and
+      click the button.
+    </p>
+    <textarea id="code" rows="24" cols="80">
+import microbit
+
+microbit.display.scroll("Hello, world!")
+    </textarea><br />
+    <button id="run" onclick="evaluatePython()">Run</button>
+    <button id="halt" disabled onclick="flagHalt()">Halt</button>
+    Choose a file: <input type="file" id="files" name="files[]" />
+    <button id="save" onclick="saveFile()">Save</button>
+    <br />
+    <div id="output"></div>
+    <textarea id="console" rows="12" cols="40"></textarea>
+    <div id="flag" hidden></div>
+    <script src="static/js/main.js"></script>
+  </body>
+</html>
