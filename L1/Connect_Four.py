@@ -4,7 +4,7 @@ from pprint import pprint
 n_rows_ = 6
 n_columns_ = 7
 
-def init_field(rows=n_rows_, columns=n_columns_): 
+def init_field(rows=n_rows_, columns=n_columns_): # test commit
     """
     Intialize field
     :param rows: number of rows :param columns: number of columns :return: list of lists
