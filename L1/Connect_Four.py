@@ -9,6 +9,7 @@ def init_field(rows=n_rows_, columns=n_columns_): # test commit
     Intialize field
     :param rows: number of rows :param columns: number of columns :return: list of lists
     """
+    field  = [x in ]
 
 def drop_token(field, col, player, symbol={True: 'x', False: 'o'}): 
     """
