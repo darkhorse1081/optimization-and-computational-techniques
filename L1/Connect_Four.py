@@ -5,68 +5,52 @@ n_columns_ = 7
 def init_field(rows=n_rows_, columns=n_columns_):
     
     field = [['.' for y in range(columns)] for x in range(rows)]
-    return field
+    tokens = {True: 'x', False: 'o'}
+    return field, tokens
 
 def drop_token(field, col, player, symbol={True: 'x', False: 'o'}):
 
     global n_rows_
 
-    if player == True:
-        field[n_rows_-1][col] = symbol.get(player)
-    else:
-        field[n_rows_-1][col] = symbol.get(player)
+    for i in field[range(n_rows_)][col]:
+        if field[i+1][col] != '.':
+            field[i][col] = symbol.get(player)
+            
         
 def game_is_won(field, void='.'):
 
     # returns bool
     global n_rows_, n_columns_
 
-    result = False
+    r = n_rows_
+    c = n_columns_
 
-    # result = [[True for y in range(n_columns_) if condition...] for x in range(n_rows_)]
+    for i in range(r): #vertical
+        for j in range(c):
+            if field[r][c] != void and field[r][c] == field[r+1][c] == field[r+2][c] == field[r+3][c]:
+                return True
 
-    for i in range(n_rows_):
+    for i in range(n_rows_): #horiz
         for j in range(n_columns_):
-            if # condition:
-            result = True
-            break
-        if result == True
-        break
+            if field[r][c] != void and field[r][c] == field[r][c+1] == field[r][c+2] == field[r][c+3]:
+                return True
 
-    for i in range(n_rows_):
+    for i in range(n_rows_): #NE
         for j in range(n_columns_):
-            if # condition:
-            result = True
-            break
-        if result == True
-        break
+            if field[r][c] != void and field[r][c] == field[r-1][c+1] == field[r-2][c+2] == field[r-3][c+3]:
+                return True
 
-    for i in range(n_rows_):
+    for i in range(n_rows_): #NW
         for j in range(n_columns_):
-            if # condition:
-            result = True
-            break
-        if result == True
-        break
+            if field[r][c] != void and field[r][c] == field[r-1][c-1] == field[r-1][c-1] == field[r-1][c-1]:
+                return True
 
-    for i in range(n_rows_):
-        for j in range(n_columns_):
-            if # condition:
-            result = True
-            break
-        if result == True
-        break
-
-    return result
-
-    pass
-
+    return False
 
 def play(field, tokens):
 
-    while(not game_is_won):
-          
-    pass
+    while(not game_is_won(field, void='.')):
+          pass
 
 
 if __name__ == "__main__":
