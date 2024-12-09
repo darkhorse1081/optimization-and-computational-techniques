@@ -32,17 +32,15 @@ def game_is_won(field, void='.'):
             if field[r][c] != void and field[r][c] == field[r][c+1] == field[r][c+2] == field[r][c+3]:
                 return True
 
-    for r in range(n_rows_): #NE
-        for c in range(n_columns_):
-            if (r-3 >= 0) and (c+3 < n_columns_):
-                if field[r][c] != void and field[r][c] == field[r-1][c+1] == field[r-2][c+2] == field[r-3][c+3]:
-                    return True
+    for r in range(n_rows_-3,n_rows_): #NE
+        for c in range(n_columns_-3):
+            if field[r][c] != void and field[r][c] == field[r-1][c+1] == field[r-2][c+2] == field[r-3][c+3]:
+                return True
 
-    for r in range(n_rows_): #NW
-        for c in range(n_columns_):
-            if (r-3 >= 0) and (c-3 >= 0):
-                if field[r][c] != void and field[r][c] == field[r-1][c-1] == field[r-1][c-1] == field[r-1][c-1]:
-                    return True
+    for r in range(n_rows_-3,n_rows_): #NW
+        for c in range(n_columns_-4,n_columns_):
+            if field[r][c] != void and field[r][c] == field[r-1][c-1] == field[r-2][c-2] == field[r-3][c-3]:
+                return True
 
     return False
 
