@@ -10,8 +10,6 @@ def init_field(rows=n_rows_, columns=n_columns_):
 
 def drop_token(field, col, player, symbol={True: 'x', False: 'o'}):
 
-    global n_rows_
-
     for i in range(n_rows_-1,-1,-1):
         if field[i][col] == '.' and i == n_rows_-1:
             field[i][col] = symbol.get(player)
@@ -19,6 +17,10 @@ def drop_token(field, col, player, symbol={True: 'x', False: 'o'}):
         elif field[i][col] != '.' and field[i-1][col] == '.':
             field[i-1][col] = symbol.get(player)
             break
+        while(field[0][col] != '.'):
+            col = int(input("please try a different column: "))
+
+
      
 def game_is_won(field, void='.'):
 
@@ -61,6 +63,7 @@ def play(field, tokens):
         col = int(input(f"Player {active_player}, please enter your column between 0 to 6: "))
         while((col < 0) or (col >= n_columns_ )):
             col = int(input(f"Player {active_player}, please try again entering between 0 to 6: "))
+
         drop_token(field,col,player.get(active_player),tokens)
         pprint(field)
         if active_player == username1:
