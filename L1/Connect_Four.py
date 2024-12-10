@@ -17,11 +17,7 @@ def drop_token(field, col, player, symbol={True: 'x', False: 'o'}):
         elif field[i][col] != '.' and field[i-1][col] == '.':
             field[i-1][col] = symbol.get(player)
             break
-        while(field[0][col] != '.'):
-            col = int(input("please try a different column: "))
 
-
-     
 def game_is_won(field, void='.'):
 
     for r in range(n_rows_-4, n_rows_): #vertical
@@ -48,7 +44,6 @@ def game_is_won(field, void='.'):
 
 def play(field, tokens):
 
-    global n_columns_
     username1 = input("Please enter your name, player 1: ")
     username2 = input("Please enter your name, player 2: ")
 
@@ -61,11 +56,21 @@ def play(field, tokens):
     while(not game_is_won(field, void='.')):
 
         col = int(input(f"Player {active_player}, please enter your column between 0 to 6: "))
-        while((col < 0) or (col >= n_columns_ )):
-            col = int(input(f"Player {active_player}, please try again entering between 0 to 6: "))
+        while((col < 0) or (col >= n_columns_ ) or (field[0][col] != '.')):
+            col = int(input(f"Player {active_player}, please try again entering between 0 to 6 or column that has not been filled: "))
 
         drop_token(field,col,player.get(active_player),tokens)
         pprint(field)
+
+        sys_clock = 0
+        for i in range(n_columns_):
+            if field[0][i] == '.':
+                sys_clock += 1
+
+        if(not game_is_won(field, void='.')) and (sys_clock == 0): # indicates game has been drawn
+            winner = 'null'
+            break
+
         if active_player == username1:
             active_player = username2
         else:
