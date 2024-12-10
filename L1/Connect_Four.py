@@ -52,12 +52,13 @@ def play(field, tokens):
 
     player = {username1:True, username2:False}
 
+    winner = '0' # default
     active_player = username1
     while(not game_is_won(field, void='.')):
 
         col = int(input(f"Player {active_player}, please enter your column between 0 to 6: "))
         while((col < 0) or (col >= n_columns_ ) or (field[0][col] != '.')):
-            col = int(input(f"Player {active_player}, please try again entering between 0 to 6 or column that has not been filled: "))
+            col = int(input(f"Player {active_player}, please try again entering between 0 to 6 and a column that has not been filled: "))
 
         drop_token(field,col,player.get(active_player),tokens)
         pprint(field)
@@ -67,7 +68,7 @@ def play(field, tokens):
             if field[0][i] == '.':
                 sys_clock += 1
 
-        if(not game_is_won(field, void='.')) and (sys_clock == 0): # indicates game has been drawn
+        if(sys_clock == 0): # indicates game has been drawn
             winner = 'null'
             break
 
@@ -81,14 +82,20 @@ def play(field, tokens):
     else:
         active_player = username1
 
-    winner = active_player
-    return winner 
+    if winner == 'null':
+        return winner
+    else:
+        winner = active_player
+        return winner
 
 if __name__ == "__main__":
     field, tokens = init_field()
     pprint(field)
     winner = play(field, tokens)
-    print(f"Player {winner} wins the game. Congratulations!")
+    if winner == 'null':
+        print("Game is drawn")
+    else:
+        print(f"Player {winner} wins the game. Congratulations!")
 
 
 
