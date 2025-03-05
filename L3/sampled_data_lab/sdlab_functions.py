@@ -47,6 +47,11 @@ def spline_coefficient_matrix(xi):
     # For the beginning and end points, add matrix coefficients for equations:
     # - the polynomial second derivative is zero
 
+    xi = np.array()
+
+    
+
+
     return A
 
 
