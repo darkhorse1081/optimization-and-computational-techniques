@@ -40,24 +40,24 @@ if run_ex1:
     tq, pm2 = np.genfromtxt('PW2.dat', delimiter=',', skip_header=1).T
     ty, iy = np.genfromtxt('IW1.dat', delimiter=',', skip_header=1).T
 
-    # **Whats happening here?**
+    # returns a tuple containing figure and ax1 object
     f, ax1 = plt.subplots(nrows=1, ncols=1)
-    ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data
+    ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
 
-    # **Whats happening here?**
+    # data plotted and labeled with marker colours such as black blue and red on the graph
     ax1.plot(tm, pm1, 'k-', label='PW1')
     ax1.plot(tq, pm2, 'b-', label='PW2')
     ax2.plot(ty, iy, 'r*', markersize=7)
 
-    # **Whats happening here?**
-    ax1.arrow(2003.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='b')
-    ax1.text(2003., 14.65, 'M 3.5', ha='right', va='center', size=10, color='b')
-    ax1.arrow(2004.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='b')
-    ax1.text(2004.5, 15.2, 'M 4.0', ha='center', va='bottom', size=10, color='b')
-    ax1.arrow(2005., 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='b')
-    ax1.text(2005.5, 14.65, 'M 4.3', ha='left', va='center', size=10, color='b')
+    # indicators in the form of arrow accompanied by text to display values - position is also dictated by coordinates
+    ax1.arrow(2003.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
+    ax1.text(2003., 14.65, 'M 3.5', ha='right', va='center', size=10, color='k')
+    ax1.arrow(2004.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
+    ax1.text(2004.5, 15.2, 'M 4.0', ha='center', va='bottom', size=10, color='k')
+    ax1.arrow(2005., 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
+    ax1.text(2005.5, 14.65, 'M 4.3', ha='left', va='center', size=10, color='k')
 
-    # **Whats happening here?**
+    # overall graph and plot features such as titles, axis, lables, plot, etc - also includes y axis limits
     ax2.set_ylim([0, 40])
     ax1.legend(loc=2)
     ax1.set_ylim([0, 20])

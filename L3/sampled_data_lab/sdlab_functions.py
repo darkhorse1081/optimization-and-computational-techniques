@@ -30,6 +30,9 @@ def spline_coefficient_matrix(xi):
     #   **what are the correct dimensions? how to determine this from xi?**
     #   **use np.zeros() to create the array**
 
+    dimension = (4*(len(xi)-1))
+    A = np.zeros(dimension, dimension)
+
     # Loop over the subintervals, add matrix coefficients for equations:
     # - polynomial passes through lefthand point of subinterval
     # - polynomial passes through righthand point of subinterval
@@ -38,16 +41,38 @@ def spline_coefficient_matrix(xi):
     #   **how to define width of the subinterval in terms of indices of xi?**
     #   **what values go into matrix A and how do they relate to subinterval width?**
 
+    for i in range(0, len(xi)):
+        if i == 0:
+            A[i][i] = 1
+            for j in range(0,4):
+                A[i+1][j] = xi[i+1]-xi[i]
+        else:
+            A[i*2][i*4] = 1
+            for a in range(i*4,(i*4)+4):
+                A[(2*i)+1][a] = xi[i+1]-xi[i]
+
     # Loop over neighbouring subintervals, add matrix coefficients for equations:
     # - polynomial gradient continuous at shared point
     # - polynomial second derivative continuous at shared point
     #   **how many shared points should there be (in terms of length of xi)?**
     #   **what values go into matrix A and how do they relate to subinterval width?**
 
+    for i in range(1, len(xi)-1): # I want base row to start at 4
+        for x in range((i*4)-3,(i*4)+2):
+            if ((i == A[(i*2)+2]) and (x == (i*4)-3)):
+                A[(i*2)+2][x] = 1
+                A[(i*2)+3][x+1] = 2
+            elif ((i == A[(i*2)+2]) and (x == (i*4)+1)):
+                A[(i*2)+2][x] = -1
+                A[(i*2)+3][x+1] = -2
+            else
+
+
+
     # For the beginning and end points, add matrix coefficients for equations:
     # - the polynomial second derivative is zero
 
-    xi = np.array()
+    # xi = np.array()
 
     
 
