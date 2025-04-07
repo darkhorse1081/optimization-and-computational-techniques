@@ -57,24 +57,33 @@ def spline_coefficient_matrix(xi):
     #   **how many shared points should there be (in terms of length of xi)?**
     #   **what values go into matrix A and how do they relate to subinterval width?**
 
-    for i in range(1, len(xi)-1): # I want base row to start at 4
-        for x in range((i*4)-3,(i*4)+2):
-            if ((i == A[(i*2)+2]) and (x == (i*4)-3)):
-                A[(i*2)+2][x] = 1
-                A[(i*2)+3][x+1] = 2
-            elif ((i == A[(i*2)+2]) and (x == (i*4)+1)):
-                A[(i*2)+2][x] = -1
-                A[(i*2)+3][x+1] = -2
-            else
+    counter = 0
+    col_count = 1
 
+    for i in range(1, len(xi)-1):
+
+        A[(dimension/2)+counter][col_count] = 1         
+        A[(dimension/2)+counter][col_count+1] = 2*(xi[i+1]-xi[i]) 
+        A[(dimension/2)+counter][col_count+2] = 3*(xi[i+1]-xi[i]) 
+        A[(dimension/2)+counter+1][col_count+1] = 2
+        A[(dimension/2)+counter+1][col_count+2] = 6*(xi[i+1]-xi[i])
+
+        # this is near the end of the array segment
+        A[(dimension/2)+counter][counter+4] = -1
+        A[(dimension/2)+counter+1][counter+5] = -2
+
+        counter = counter + 2
+        col_count = col_count + 4
 
 
     # For the beginning and end points, add matrix coefficients for equations:
     # - the polynomial second derivative is zero
 
-    # xi = np.array()
+    A[dimension-2][2] = 2
+    A[dimension-1][dimension-2] = 2
+    A[dimension-1][dimension-1] = 6*(xi[len(xi)-1]-xi[len(xi)-2])
 
-    
+    # xi = np.array()
 
 
     return A
