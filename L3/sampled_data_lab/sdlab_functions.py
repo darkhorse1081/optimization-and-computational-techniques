@@ -26,64 +26,46 @@ def spline_coefficient_matrix(xi):
     ''' **complete the docstring**
     '''
 
-    # create an array of zeros with the correct dimensions
-    #   **what are the correct dimensions? how to determine this from xi?**
-    #   **use np.zeros() to create the array**
-
     dimension = (4*(len(xi)-1))
-    A = np.zeros(dimension, dimension)
+    d2 = (dimension,dimension)
+    A = np.zeros(d2)
 
-    # Loop over the subintervals, add matrix coefficients for equations:
-    # - polynomial passes through lefthand point of subinterval
-    # - polynomial passes through righthand point of subinterval
-    #   **how many subintervals should there be (in terms of length of xi)?**
-    #   **how to modify loop index so it jumps along a row in increments of 4?**
-    #   **how to define width of the subinterval in terms of indices of xi?**
-    #   **what values go into matrix A and how do they relate to subinterval width?**
-
-    for i in range(0, len(xi)):
+    for i in range(0, len(xi)-1):
         if i == 0:
             A[i][i] = 1
             for j in range(0,4):
                 A[i+1][j] = xi[i+1]-xi[i]
         else:
             A[i*2][i*4] = 1
+            exp = 1
             for a in range(i*4,(i*4)+4):
-                A[(2*i)+1][a] = xi[i+1]-xi[i]
-
-    # Loop over neighbouring subintervals, add matrix coefficients for equations:
-    # - polynomial gradient continuous at shared point
-    # - polynomial second derivative continuous at shared point
-    #   **how many shared points should there be (in terms of length of xi)?**
-    #   **what values go into matrix A and how do they relate to subinterval width?**
+                if a == i*4:
+                    A[(2*i)+1][a] = 1
+                else:
+                    A[(2*i)+1][a] = (xi[i+1]-xi[i])**exp
+                    exp = exp+1
 
     counter = 0
     col_count = 1
 
     for i in range(1, len(xi)-1):
 
-        A[(dimension/2)+counter][col_count] = 1         
-        A[(dimension/2)+counter][col_count+1] = 2*(xi[i+1]-xi[i]) 
-        A[(dimension/2)+counter][col_count+2] = 3*(xi[i+1]-xi[i]) 
-        A[(dimension/2)+counter+1][col_count+1] = 2
-        A[(dimension/2)+counter+1][col_count+2] = 6*(xi[i+1]-xi[i])
+        A[int((dimension/2))+counter][col_count] = 1         
+        A[int((dimension/2))+counter][col_count+1] = 2*(xi[i]-xi[i-1]) 
+        A[int((dimension/2))+counter][col_count+2] = 3*(xi[i]-xi[i-1]) 
+        A[int((dimension/2))+counter+1][col_count+1] = 2
+        A[int((dimension/2))+counter+1][col_count+2] = 6*(xi[i]-xi[i-1])
 
         # this is near the end of the array segment
-        A[(dimension/2)+counter][counter+4] = -1
-        A[(dimension/2)+counter+1][counter+5] = -2
+        A[int((dimension/2))+counter][col_count+4] = -1 # wrong
+        A[int((dimension/2))+counter+1][col_count+5] = -2
 
         counter = counter + 2
         col_count = col_count + 4
 
-
-    # For the beginning and end points, add matrix coefficients for equations:
-    # - the polynomial second derivative is zero
-
     A[dimension-2][2] = 2
     A[dimension-1][dimension-2] = 2
     A[dimension-1][dimension-1] = 6*(xi[len(xi)-1]-xi[len(xi)-2])
-
-    # xi = np.array()
 
 
     return A
