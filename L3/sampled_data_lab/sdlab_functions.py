@@ -26,8 +26,8 @@ def spline_coefficient_matrix(xi):
     ''' **complete the docstring**
     '''
 
-    dimension = (4*(len(xi)-1))
-    d2 = (dimension,dimension)
+    d1 = (4*(len(xi)-1))
+    d2 = (d1,d1)
     A = np.zeros(d2)
 
     for i in range(0, len(xi)-1):
@@ -45,27 +45,27 @@ def spline_coefficient_matrix(xi):
                     A[(2*i)+1][a] = (xi[i+1]-xi[i])**exp
                     exp = exp+1
 
-    counter = 0
-    col_count = 1
+    cntr = 0
+    cl_cnt = 1
 
     for i in range(1, len(xi)-1):
 
-        A[int((dimension/2))+counter][col_count] = 1         
-        A[int((dimension/2))+counter][col_count+1] = 2*(xi[i]-xi[i-1]) 
-        A[int((dimension/2))+counter][col_count+2] = 3*(xi[i]-xi[i-1]) 
-        A[int((dimension/2))+counter+1][col_count+1] = 2
-        A[int((dimension/2))+counter+1][col_count+2] = 6*(xi[i]-xi[i-1])
+        A[int((d1/2))+cntr][cl_cnt] = 1         
+        A[int((d1/2))+cntr][cl_cnt+1] = 2*(xi[i]-xi[i-1]) 
+        A[int((d1/2))+cntr][cl_cnt+2] = 3*(xi[i]-xi[i-1]) 
+        A[int((d1/2))+cntr+1][cl_cnt+1] = 2
+        A[int((d1/2))+cntr+1][cl_cnt+2] = 6*(xi[i]-xi[i-1])
 
         # this is near the end of the array segment
-        A[int((dimension/2))+counter][col_count+4] = -1 # wrong
-        A[int((dimension/2))+counter+1][col_count+5] = -2
+        A[int((d1/2))+cntr][cl_cnt+4] = -1 # wrong
+        A[int((d1/2))+cntr+1][cl_cnt+5] = -2
 
-        counter = counter + 2
-        col_count = col_count + 4
+        cntr = cntr + 2
+        cl_cnt = cl_cnt + 4
 
-    A[dimension-2][2] = 2
-    A[dimension-1][dimension-2] = 2
-    A[dimension-1][dimension-1] = 6*(xi[len(xi)-1]-xi[len(xi)-2])
+    A[d1-2][2] = 2
+    A[d1-1][d1-2] = 2
+    A[d1-1][d1-1] = 6*(xi[len(xi)-1]-xi[len(xi)-2])
 
 
     return A
