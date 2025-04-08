@@ -109,15 +109,14 @@ def spline_interpolate(xj, xi, ak):
         Evaluate polynomial using polyval function DEFINED below.
     '''
 
-    # Suggested strategy (you could devise another).
-    # 1. Initialise FIRST subinterval (and polynomial) as CURRENT subinterval (and polynomial).
-    # 2. FOR each interpolation point.
-    # 3. WHILE interpolation point NOT inside CURRENT subinterval, iterate
-    #    to NEXT subinterval (and polynomial).
-    # 4. Evaluate CURRENT polynomial at interpolation point.
-    # 5. RETURN when all interpolation points evaluated.
+    yj = np.zeros(len(xj))
 
-    pass
+    for i in range(0,len(xj)):
+        m = np.argmax(np.logical_and(xj[i] >= xi[:-1], xj[i] < xi[1:]))
+        yj[i] = polyval(np.flip(ak[4 * m:4 * (m + 1)]), xj[i])
+
+
+    return yj
 
 
 # this function is complete
