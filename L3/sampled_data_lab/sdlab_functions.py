@@ -33,8 +33,13 @@ def spline_coefficient_matrix(xi):
     for i in range(0, len(xi)-1):
         if i == 0:
             A[i][i] = 1
+            v = 1
             for j in range(0,4):
-                A[i+1][j] = xi[i+1]-xi[i]
+                if j == 0:
+                    A[i+1][j] = 1
+                else:
+                    A[i+1][j] = xi[i+1]-xi[i]**v
+                    v = v + 1
         else:
             A[i*2][i*4] = 1
             exp = 1
