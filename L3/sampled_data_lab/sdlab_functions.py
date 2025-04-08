@@ -84,8 +84,18 @@ def spline_rhs(xi, yi):
     # **use structure of spline_coefficient_matrix() as a guide for
     #   completing this function**
 
+    a1 = spline_coefficient_matrix(xi)
+    rhs = np.zeros(4*(len(xi)-1))
+    rhs[int((4*(len(xi)-1))/2):4*(len(xi)-1)] = 0
+
+    cnt = 1
+    for i in range(0,int((4*(len(xi)-1))/2),2):
+        rhs[i] = yi[int(i/2)]
+        rhs[i+1] = yi[i+cnt]
+        cnt = cnt-1
+
     # delete this command once you have written your code
-    pass
+    return rhs
 
 
 # **this function is incomplete**
