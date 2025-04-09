@@ -111,10 +111,9 @@ def spline_interpolate(xj, xi, ak):
 
     yj = np.zeros(len(xj))
 
-    for i in range(0,len(xj)):
+    for i in range(len(xj)):
         m = np.argmax(np.logical_and(xj[i] >= xi[:-1], xj[i] < xi[1:]))
-        yj[i] = polyval(np.flip(ak[4 * m:4 * (m + 1)]), xj[i])
-
+        yj[i] = np.polyval(np.flip(ak[4*m:(4*m) + 4]), xj[i]-xi[m])
 
     return yj
 
