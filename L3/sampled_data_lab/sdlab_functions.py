@@ -38,7 +38,7 @@ def spline_coefficient_matrix(xi):
                 if j == 0:
                     A[i+1][j] = 1
                 else:
-                    A[i+1][j] = xi[i+1]-xi[i]**v
+                    A[i+1][j] = (xi[i+1]-xi[i])**v
                     v = v + 1
         else:
             A[i*2][i*4] = 1
@@ -57,12 +57,12 @@ def spline_coefficient_matrix(xi):
 
         A[int((d1/2))+cntr][cl_cnt] = 1         
         A[int((d1/2))+cntr][cl_cnt+1] = 2*(xi[i]-xi[i-1]) 
-        A[int((d1/2))+cntr][cl_cnt+2] = 3*(xi[i]-xi[i-1]) 
+        A[int((d1/2))+cntr][cl_cnt+2] = 3*((xi[i]-xi[i-1])**2)
         A[int((d1/2))+cntr+1][cl_cnt+1] = 2
         A[int((d1/2))+cntr+1][cl_cnt+2] = 6*(xi[i]-xi[i-1])
 
         # this is near the end of the array segment
-        A[int((d1/2))+cntr][cl_cnt+4] = -1 # wrong
+        A[int((d1/2))+cntr][cl_cnt+4] = -1 
         A[int((d1/2))+cntr+1][cl_cnt+5] = -2
 
         cntr = cntr + 2
