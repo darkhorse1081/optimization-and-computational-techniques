@@ -23,14 +23,28 @@ tq, pm2 = np.genfromtxt(open(dir_path + '/' + 'PW2.dat'), delimiter=',', skip_he
 ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_header=1).T
 
 
-# cumulative mass
 
-tm1_mass_cumulative = np.zeros(len(tm)-1)
-tq1_mass_cumulative = np.zeros(len(tq))
+tm1_mass_cumulative = np.zeros(len(tm)-1) # cumulative mass
+
+ 
+tq2_inter_point = np.zeros(len(tm)) # want this to expand
 
 
+# interpolation points -- linespacing -- times (years) this is based on missing data in IW1
+# original xi is tq array
 
 
+spacing = ((max(tm) - min(tm))/len(tm)-1) # xj values 
+
+
+# populating my xj
+for i in range(len(tm)):
+     if i == 0:
+           tq2_inter_point[i] = tq[0]
+     else:
+           tq2_inter_point[i] = tq2_inter_point[i-1] + spacing
+
+# after full interpolation
 for i in range(len(tm)-1):
      tm1_mass_cumulative[i] = ((pm1[i]+pm1[i+1])/2)*(tm[i]-tm[i+1])
 
