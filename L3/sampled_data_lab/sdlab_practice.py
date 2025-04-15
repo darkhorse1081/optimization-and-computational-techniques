@@ -21,9 +21,9 @@ from sdlab_functions import *
 tol = 1.e-6
 
 # Boolean variables to run each exercise
-run_ex1 = False  # boolean to run EXERCISE 1
+run_ex1 = True  # boolean to run EXERCISE 1
 run_ex2 = False  # boolean to run EXERCISE 2
-run_ex3 = True  # boolean to run EXERCISE 3
+run_ex3 = False  # boolean to run EXERCISE 3
 
 # EXERCISE 1: Plotting sampled data (max 20 mins)
 # This exercise introduces some basic plotting commands. Everything is already complete.

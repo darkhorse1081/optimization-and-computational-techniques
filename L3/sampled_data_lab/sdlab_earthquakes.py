@@ -1,6 +1,12 @@
 # ENGSCI233: Lab - Sampled Data
 # sdlab_earthquakes.py
 
+from matplotlib import pyplot as plt  # MATPLOTLIB is THE plotting module for Python
+import numpy as np
+from numpy.linalg import norm, solve
+from sdlab_functions import *
+import os 
+
 # PURPOSE:
 # To INVESTIGATE a dataset using interpolation and integration methods.
 
@@ -10,6 +16,29 @@
 # SUBMISSION:
 # - YOU MUST submit a plot of NET MASS CHANGE as a function of time (sdlab_earthquakes.png)
 # - You MUST submit this file to complete the lab.
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+tm, pm1 = np.genfromtxt(open(dir_path + '/' + 'PW1.dat'), delimiter=',', skip_header=1).T
+tq, pm2 = np.genfromtxt(open(dir_path + '/' + 'PW2.dat'), delimiter=',', skip_header=1).T
+ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_header=1).T
+
+
+# cumulative mass
+
+tm1_mass_cumulative = np.zeros(len(tm)-1)
+tq1_mass_cumulative = np.zeros(len(tq))
+
+
+
+
+for i in range(len(tm)-1):
+     tm1_mass_cumulative[i] = ((pm1[i]+pm1[i+1])/2)*(tm[i]-tm[i+1])
+
+
+
+# x = 5
+# y = 2
+
 
 
 # EXERCISE: Analysis of Net Mass Changes.
@@ -45,7 +74,7 @@
 # - To add or difference two quantities, they should be measured or interpolated at the same time.
 # - You should consider a sensible strategy for the event that an interpolation point lies outside 
 #   the range of data (extrapolation).
-# - MASS RATE is a derivative (per unit time) and CUMULATIVE MASS is its integral.
+# - MASS RATE is a derivative (per unit time) and CUMULATIVE MASS is its integral. 
 # - You will be assessed on the ability of your figure to convey information. Things that help:
 #    o Sensible labels (and units) for the axes.
 #    o A legend.
