@@ -24,9 +24,8 @@ ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_hea
 
 
 
-tm1_mass_cumulative = np.zeros(len(tm)-1) # cumulative mass
 
- 
+tq1_inter_point = 0
 tq2_inter_point = np.zeros(len(tm)) # want this to expand
 
 
@@ -44,7 +43,9 @@ for i in range(len(tm)):
      else:
            tq2_inter_point[i] = tq2_inter_point[i-1] + spacing
 
-# after full interpolation
+
+
+# after full interpolation - only for cumulative mass
 for i in range(len(tm)-1):
      tm1_mass_cumulative[i] = ((pm1[i]+pm1[i+1])/2)*(tm[i]-tm[i+1])
 
