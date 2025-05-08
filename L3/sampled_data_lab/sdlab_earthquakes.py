@@ -3,7 +3,7 @@
 
 from matplotlib import pyplot as plt  # MATPLOTLIB is THE plotting module for Python
 import numpy as np
-from numpy.linalg import norm, solve
+from numpy.linalg import solve
 from sdlab_functions import *
 import os 
 
@@ -23,31 +23,58 @@ tq, pm2 = np.genfromtxt(open(dir_path + '/' + 'PW2.dat'), delimiter=',', skip_he
 ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_header=1).T
 
 
+# first interpolation for tq (PW1) data so we do across same ammount of points for all datasets
+# comparison for xi will be used to obtain final spline
+
+tm_xj = np.linspace(tm[0],tm[-1],len(tm))
+pw1_yj = interpolate_to_cumulative(tm,pm1,tq_xj)
+
+# first interpolation for tq (PW2) data
+
+tq_xj = np.linspace(tm[0],tm[-1],len(tm))
+pw2_yj = interpolate_to_cumulative(tq,pm2,tq_xj)
+
+# interpolation for ty (IW1) data
+
+tq_xj = np.linspace(tm[0],tm[-1],len(tm))
+pw2_yj = interpolate_to_cumulative(tq,pm2,tq_xj)
 
 
-tq1_inter_point = 0
-tq2_inter_point = np.zeros(len(tm)) # want this to expand
+# net mass change and cumulative of the interpolated data
+# net mass chnage will be processed from when injection takes effect first - only 1993.5 onwards
+
+
+
+
 
 
 # interpolation points -- linespacing -- times (years) this is based on missing data in IW1
 # original xi is tq array
 
-
-spacing = ((max(tm) - min(tm))/len(tm)-1) # xj values 
-
-
-# populating my xj
-for i in range(len(tm)):
-     if i == 0:
-           tq2_inter_point[i] = tq[0]
-     else:
-           tq2_inter_point[i] = tq2_inter_point[i-1] + spacing
-
-
-
 # after full interpolation - only for cumulative mass
-for i in range(len(tm)-1):
-     tm1_mass_cumulative[i] = ((pm1[i]+pm1[i+1])/2)*(tm[i]-tm[i+1])
+
+def cumulative_mass(int_input, int_extract):
+
+      cummulated_final = np.zeros(len(int_input))
+
+      for i in range(len(int_input)):
+            if i == len(int_input)-1:
+                  cummulated_final[i] = int_input[i]
+            cummulated_final[i] = ((int_extract[i]+int_extract[i+1])/2)*(int_input[i]-int_input[i+1])
+
+      return cummulated_final
+
+def interpolate_to_cumulative(xi,yi,xj):
+
+      yj = np.zeros(len(xj))
+      A = spline_coefficient_matrix(xi)
+      b = spline_rhs(xi,yi)
+      ak = solve(A,b)
+      yj = spline_interpolate(xj,xi,ak)
+      yj = cumulative_mass(xj,yj)
+
+      return yj
+
 
 
 
