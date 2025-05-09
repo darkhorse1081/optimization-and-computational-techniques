@@ -46,13 +46,15 @@ if __name__ == "__main__":
 
       # first interpolation for tq (PW1) data so we do across same ammount of points for all datasets
       # comparison for xi will be used to obtain final spline
+      # make common timestamp for linspace for all three datasets
+      # interpolation occurs through comparison between predicted and known timestamps
 
-      tm_xj = np.linspace(tm[0],tm[-1],len(tm))
+      tm_xj = np.linspace(tq[0],tq[-1],len(tm))  
       pm1_yj = interpolate_to_cumulative(tm,pm1,tm_xj)
 
       # first interpolation for tq (PW2) data - how to match with pw1
 
-      tq_xj = np.linspace(tm[0],tm[-1],len(tm))
+      tq_xj = np.linspace(tq[0],tq[-1],len(tm))
       pm2_yj = interpolate_to_cumulative(tq,pm2,tq_xj)
 
       # interpolation for ty (IW1) data - how to extrapolate
@@ -65,7 +67,7 @@ if __name__ == "__main__":
       netMassExtract = np.zeros(len(ty_xj)-1)
       for i in range(len(ty_xj)-1):
             netMassExtract[i] = (pm1_yj[i]+pm2_yj[i])-iy2_yj[i] # cumulative net mass
-
+            
       f, ax1 = plt.subplots(nrows=1, ncols=1)
       ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
 
