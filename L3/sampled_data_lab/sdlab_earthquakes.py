@@ -43,7 +43,6 @@ if __name__ == "__main__":
       tq, pm2 = np.genfromtxt(open(dir_path + '/' + 'PW2.dat'), delimiter=',', skip_header=1).T
       ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_header=1).T
 
-
       # first interpolation for tq (PW1) data so we do across same ammount of points for all datasets
       # comparison for xi will be used to obtain final spline
       # make common timestamp for linspace for all three datasets
@@ -53,21 +52,24 @@ if __name__ == "__main__":
       pm1_yj = interpolate_to_cumulative(tm,pm1,tm_xj)
 
       # first interpolation for tq (PW2) data - how to match with pw1
+      # tq data interpolated with respect to tm
 
-      tq_xj = np.linspace(tq[0],tq[-1],len(tm))
+      tq_xj = np.linspace(tq[0],tq[-1],len(tm)) 
       pm2_yj = interpolate_to_cumulative(tq,pm2,tq_xj)
 
       # interpolation for ty (IW1) data - how to extrapolate
 
-      ty_xj = np.linspace(ty[0],ty[-1],len(tm))
+      ty_xj = np.linspace(tq[0],tq[-1],len(tm)) # --
+      m = np.argmax(np.logical_and(ty[0] >= ty_xj[:-1], ty[0] < ty_xj[1:]))
+      ty_xj = ty_xj[m:]
       iy2_yj = interpolate_to_cumulative(ty,iy,ty_xj)
 
       # interpolation for ty (IW1) data - how to extrapolate
 
-      netMassExtract = np.zeros(len(ty_xj)-1)
-      for i in range(len(ty_xj)-1):
+      netMassExtract = np.zeros(len(ty_xj)-1) # --
+      for i in range(m,len(ty_xj)-1):
             netMassExtract[i] = (pm1_yj[i]+pm2_yj[i])-iy2_yj[i] # cumulative net mass
-            
+
       f, ax1 = plt.subplots(nrows=1, ncols=1)
       ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
 
