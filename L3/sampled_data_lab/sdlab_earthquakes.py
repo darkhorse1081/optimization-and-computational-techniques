@@ -92,52 +92,20 @@ if __name__ == "__main__":
       ax2.set_ylim([0, 40])
       ax1.legend(loc=2)
       ax1.set_ylim([0, 20])
-      ax1.set_ylabel('production rate [kg/s]')
-      ax2.set_ylabel('injection rate [kg/s]')
+      ax1.set_ylabel('interpolated cumulative production mass [kg]')
+      ax2.set_ylabel('interpolated cumulative injection mass [kg]')
       ax2.set_xlabel('time [yr]')
-      ax2.set_title('Summary of field operations and seismicity at field X')
+      ax2.set_title('Cumulative Net Mass of production and injection at field X')
 
 # net mass change and cumulative of the interpolated data
 # net mass chnage will be processed from when injection takes effect first - only 1993.5 onwards
 
 # my first measurement should be done on interpolated_xj[1] to inclusive final interpolated_xj[-1]
 
-
-
-      
-
-
-
-
-
 # interpolation points -- linespacing -- times (years) this is based on missing data in IW1
 # original xi is tq array
 
 # after full interpolation - only for cumulative mass
-
-
-
-
-# EXERCISE: Analysis of Net Mass Changes.
-#
-# Earthquakes are sometimes associated with oil and gas production (taking mass out of the 
-# ground) and injection (putting it back in) operations.
-# 
-# It has been suggested that injection of water at one particular site, which started midway through  
-# 1993, has been responsible for a spate of recent earthquakes there. These are the data that were 
-# plotted in the first exercise of sdlab_practice.py. The operator of the field has claimed they 
-# cannot be responsible, because injection had been ongoing for almost 10 years before any earthquakes
-# occurred.
-#
-# It has been proposed the earthquakes may be related to NET MASS CHANGES in the field. Therefore,
-# it is necessary to understand how this quantity has evolved over time.
-#
-# Although data from the two production wells (mass extractors) - PW1 and PW2 - are reported regularly,
-# data reporting from the injection well, IW1, is more irregular. In addition, the operator only 
-# reports MASS RATES, not CUMULATIVE production or injection MASS.
-#
-# TO solve this problem, you will need to use both INTERPOLATION and INTEGRATION.
-
 
 # TO DO:
 # - In sdlab_functions.py, COMPLETE the functions SPLINE_COEFFICIENT_MATRIX, SPLINE_RHS, and
