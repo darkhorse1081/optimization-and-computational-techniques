@@ -21,7 +21,7 @@ def cumulative_mass(xj, yj):
 
       cummulated_final = np.zeros(len(xj)-1)
       for i in range(len(xj)-1):
-            cummulated_final[i] = ((yj[i]+yj[i+1])/2)*(xj[i]-xj[i+1])
+            cummulated_final[i] = ((yj[i]+yj[i+1])/2)*(xj[i+1]-xj[i])
 
       return cummulated_final
 
