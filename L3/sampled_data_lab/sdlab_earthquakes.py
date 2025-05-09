@@ -17,11 +17,11 @@ import os
 # - YOU MUST submit a plot of NET MASS CHANGE as a function of time (sdlab_earthquakes.png)
 # - You MUST submit this file to complete the lab.
 
-def cumulative_mass(int_input, int_extract):
+def cumulative_mass(xj, yj):
 
-      cummulated_final = np.zeros(len(int_input)-1)
-      for i in range(len(int_input)-1):
-            cummulated_final[i] = ((int_extract[i]+int_extract[i+1])/2)*(int_input[i]-int_input[i+1])
+      cummulated_final = np.zeros(len(xj)-1)
+      for i in range(len(xj)-1):
+            cummulated_final[i] = ((yj[i]+yj[i+1])/2)*(xj[i]-xj[i+1])
 
       return cummulated_final
 
@@ -32,9 +32,9 @@ def interpolate_to_cumulative(xi,yi,xj):
       b = spline_rhs(xi,yi)
       ak = solve(A,b)
       yj = spline_interpolate(xj,xi,ak)
-      yj = cumulative_mass(xj,yj)
+      mass = cumulative_mass(xj,yj)
 
-      return yj
+      return mass
 
 if __name__ == "__main__":
 
@@ -43,9 +43,6 @@ if __name__ == "__main__":
       tq, pm2 = np.genfromtxt(open(dir_path + '/' + 'PW2.dat'), delimiter=',', skip_header=1).T
       ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_header=1).T
 
-      # first interpolation for tq (PW1) data so we do across same ammount of points for all datasets
-      # comparison for xi will be used to obtain final spline
-      # make common timestamp for linspace for all three datasets
       # interpolation occurs through comparison between predicted and known timestamps
 
       tm_xj = np.linspace(tq[0],tq[-1],len(tm))  
@@ -61,45 +58,35 @@ if __name__ == "__main__":
 
       ty_xj = np.linspace(tq[0],tq[-1],len(tm)) # --
       m = np.argmax(np.logical_and(ty[0] >= ty_xj[:-1], ty[0] < ty_xj[1:]))
-      ty_xj = ty_xj[m:]
-      iy2_yj = interpolate_to_cumulative(ty,iy,ty_xj)
+      ty_xj2 = ty_xj[m:]
+      iy2_yj = interpolate_to_cumulative(ty,iy,ty_xj2)
 
       # interpolation for ty (IW1) data - how to extrapolate
 
-      netMassExtract = np.zeros(len(ty_xj)-1) # --
-      for i in range(m,len(ty_xj)-1):
+      netMassExtract = np.zeros(len(ty_xj2)-1) # --
+      for i in range(m,len(ty_xj2)-1):
             netMassExtract[i] = (pm1_yj[i]+pm2_yj[i])-iy2_yj[i] # cumulative net mass
 
       f, ax1 = plt.subplots(nrows=1, ncols=1)
       ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
 
-      # data plotted and labeled with marker colours such as black blue and red on the graph
-      # remember plot points
-      # x axis in interpolated xj predcitions
-      # y axis is interpolated output xj
-
       # for every cumulative mass we count from first time after injection first began so [0] + 1
-      ax1.plot(tm_xj[1:], pm1_yj, 'k-', label='PW1')
-      ax1.plot(tq_xj[1:], pm2_yj, 'b-', label='PW2')
-      ax2.plot(ty_xj[1:], iy2_yj, 'navy-', label='IW1')
-      ax2.plot(ty_xj[1:], netMassExtract, 'dimgrey-', label='Net-Mass')
-
-      # indicators in the form of arrow accompanied by text to display values - position is also dictated by coordinates
-      ax1.arrow(2003.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
-      ax1.text(2003., 14.65, 'M 3.5', ha='right', va='center', size=10, color='k')
-      ax1.arrow(2004.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
-      ax1.text(2004.5, 15.2, 'M 4.0', ha='center', va='bottom', size=10, color='k')
-      ax1.arrow(2005., 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
-      ax1.text(2005.5, 14.65, 'M 4.3', ha='left', va='center', size=10, color='k')
+      ax1.plot(tm_xj[1:], pm1_yj, 'k', label='PW1')
+      ax1.plot(tq_xj[1:], pm2_yj, 'b', label='PW2')
+      ax2.plot(ty_xj2[1:], iy2_yj, 'g', label='IW1')
+      ax2.plot(ty_xj2[1:], netMassExtract, 'y', label='Net-Mass')
 
       # overall graph and plot features such as titles, axis, lables, plot, etc - also includes y axis limits
-      ax2.set_ylim([0, 40])
+      ax2.set_ylim([-400, 500])
+      ax1.set_ylim([-400, 500])
       ax1.legend(loc=2)
-      ax1.set_ylim([0, 20])
+      ax2.legend(loc=0)
       ax1.set_ylabel('interpolated cumulative production mass [kg]')
       ax2.set_ylabel('interpolated cumulative injection mass [kg]')
       ax2.set_xlabel('time [yr]')
       ax2.set_title('Cumulative Net Mass of production and injection at field X')
+
+      plt.show()
 
 # net mass change and cumulative of the interpolated data
 # net mass chnage will be processed from when injection takes effect first - only 1993.5 onwards
