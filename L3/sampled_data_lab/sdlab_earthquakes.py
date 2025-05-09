@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
       netMassExtract = np.zeros(len(ty_xj)-1)
       for i in range(len(ty_xj)-1):
-            netMassExtract[i] = (tm_xj[i]+tq_xj[i])-ty_xj[i] # cumulative net mass
+            netMassExtract[i] = (pm1_yj[i]+pm2_yj[i])-iy2_yj[i] # cumulative net mass
 
       f, ax1 = plt.subplots(nrows=1, ncols=1)
       ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
@@ -75,10 +75,10 @@ if __name__ == "__main__":
       # y axis is interpolated output xj
 
       # for every cumulative mass we count from first time after injection first began so [0] + 1
-      ax1.plot(tm_xj, pm1_yj, 'k-', label='PW1')
-      ax1.plot(tq_xj, pm2_yj, 'b-', label='PW2')
-      ax2.plot(ty_xj, iy2_yj, 'navy-', label='IW1')
-      ax2.plot(ty_xj, netMassExtract, 'dimgrey-', label='Net-Mass')
+      ax1.plot(tm_xj[1:], pm1_yj, 'k-', label='PW1')
+      ax1.plot(tq_xj[1:], pm2_yj, 'b-', label='PW2')
+      ax2.plot(ty_xj[1:], iy2_yj, 'navy-', label='IW1')
+      ax2.plot(ty_xj[1:], netMassExtract, 'dimgrey-', label='Net-Mass')
 
       # indicators in the form of arrow accompanied by text to display values - position is also dictated by coordinates
       ax1.arrow(2003.5, 15, 0., -0.75, length_includes_head=True, head_width=0.2, head_length=0.1, color='k')
