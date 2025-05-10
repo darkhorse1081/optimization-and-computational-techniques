@@ -4,17 +4,6 @@ from numpy.linalg import solve
 from sdlab_functions import *
 import os 
 
-# PURPOSE:
-# To INVESTIGATE a dataset using interpolation and integration methods.
-
-def cumulative_mass(xj, yj):
-
-      cummulated_final = np.zeros(len(xj)-1)
-      for i in range(len(xj)-1):
-            cummulated_final[i] = ((yj[i]+yj[i+1])/2)*(xj[i+1]-xj[i])
-
-      return cummulated_final
-
 def interpolate(xi,yi,xj):
 
       yj = np.zeros(len(xj))
@@ -47,8 +36,8 @@ if __name__ == "__main__":
       # interpolation for ty (IW1) data - how to extrapolate
 
       ty_xj = np.linspace(tq[0],tq[-1],len(tm)) 
-      m = np.argmax(np.logical_and(ty[0] >= ty_xj[:-1], ty[0] < ty_xj[1:]))
-      n = np.argmax(np.logical_and(ty[-1] >= ty_xj[:-1], ty[-1] < ty_xj[1:]))
+      m = np.argmax(np.logical_and(ty[0] >= ty_xj[:-1], ty[0] <= ty_xj[1:]))
+      n = np.argmax(np.logical_and(ty[-1] >= ty_xj[:-1], ty[-1] <= ty_xj[1:]))
       ty_xj2 = ty_xj[m:n+1] # new interpolate data
       iy2_yj = interpolate(ty,iy,ty_xj2) # dont want cumulative mass for raw data 
 
@@ -57,10 +46,11 @@ if __name__ == "__main__":
 
       netMassExtract = np.zeros(len(ty_xj2)-1) # --
 
-      for i in range(m,len(ty_xj2)-1):
-            netMassExtract[i] = (((pm1_yj[i]+pm1_yj[i+1])/2)*(ty_xj2[i+1]-ty_xj2[i])+
-                                 ((pm2_yj[i]+pm2_yj[i+1])/2)*(ty_xj2[i+1]-ty_xj2[i]))-(((iy2_yj[i]+iy2_yj[i+1])/2)*(ty_xj2[i+1]-ty_xj2[i]))
-            
+      ct = 0
+      for i in range(m,n):
+            netMassExtract[ct] = abs(((((pm1_yj[i]+pm1_yj[i+1])/2)*(tq_xj[i+1]-tq_xj[i]))+
+                                 (((pm2_yj[i]+pm2_yj[i+1])/2)*(tq_xj[i+1]-tq_xj[i])))-(((iy2_yj[ct]+iy2_yj[ct+1])/2)*(tq_xj[i+1]-tq_xj[i])))
+            ct = ct+1
 
       f, ax1 = plt.subplots(nrows=1, ncols=1)
       ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
