@@ -25,16 +25,15 @@ def cumulative_mass(xj, yj):
 
       return cummulated_final
 
-def interpolate_to_cumulative(xi,yi,xj):
+def interpolate(xi,yi,xj):
 
       yj = np.zeros(len(xj))
       A = spline_coefficient_matrix(xi)
       b = spline_rhs(xi,yi)
       ak = solve(A,b)
       yj = spline_interpolate(xj,xi,ak)
-      mass = cumulative_mass(xj,yj)
 
-      return mass
+      return yj
 
 if __name__ == "__main__":
 
@@ -46,39 +45,44 @@ if __name__ == "__main__":
       # interpolation occurs through comparison between predicted and known timestamps
 
       tm_xj = np.linspace(tq[0],tq[-1],len(tm))  
-      pm1_yj = interpolate_to_cumulative(tm,pm1,tm_xj)
+      pm1_yj = interpolate(tm,pm1,tm_xj)
 
       # first interpolation for tq (PW2) data - how to match with pw1
       # tq data interpolated with respect to tm
 
       tq_xj = np.linspace(tq[0],tq[-1],len(tm)) 
-      pm2_yj = interpolate_to_cumulative(tq,pm2,tq_xj)
+      pm2_yj = interpolate(tq,pm2,tq_xj)
 
       # interpolation for ty (IW1) data - how to extrapolate
 
-      ty_xj = np.linspace(tq[0],tq[-1],len(tm)) # --
+      ty_xj = np.linspace(tq[0],tq[-1],len(tm)) 
       m = np.argmax(np.logical_and(ty[0] >= ty_xj[:-1], ty[0] < ty_xj[1:]))
-      ty_xj2 = ty_xj[m:]
-      iy2_yj = interpolate_to_cumulative(ty,iy,ty_xj2)
+      n = np.argmax(np.logical_and(ty[-1] >= ty_xj[:-1], ty[-1] < ty_xj[1:]))
+      ty_xj2 = ty_xj[m:n+1] # new interpolate data
+      iy2_yj = interpolate(ty,iy,ty_xj2) # dont want cumulative mass for raw data 
 
+      # cumulative data only for net mass
       # interpolation for ty (IW1) data - how to extrapolate
 
       netMassExtract = np.zeros(len(ty_xj2)-1) # --
+
       for i in range(m,len(ty_xj2)-1):
-            netMassExtract[i] = (pm1_yj[i]+pm2_yj[i])-iy2_yj[i] # cumulative net mass
+            netMassExtract[i] = (((pm1_yj[i]+pm1_yj[i+1])/2)*(ty_xj2[i+1]-ty_xj2[i])+
+                                 ((pm2_yj[i]+pm2_yj[i+1])/2)*(ty_xj2[i+1]-ty_xj2[i]))-(((iy2_yj[i]+iy2_yj[i+1])/2)*(ty_xj2[i+1]-ty_xj2[i]))
+            
 
       f, ax1 = plt.subplots(nrows=1, ncols=1)
       ax2 = ax1.twinx()  # twinned plots are a powerful way to juxtapose data - plots in opposite direction
 
       # for every cumulative mass we count from first time after injection first began so [0] + 1
-      ax1.plot(tm_xj[1:], pm1_yj, 'k', label='PW1')
-      ax1.plot(tq_xj[1:], pm2_yj, 'b', label='PW2')
-      ax2.plot(ty_xj2[1:], iy2_yj, 'g', label='IW1')
-      ax2.plot(ty_xj2[1:], netMassExtract, 'y', label='Net-Mass')
+      ax1.plot(tm_xj, pm1_yj, 'k-', label='PW1')
+      ax1.plot(tq_xj, pm2_yj, 'b-', label='PW2')
+      ax2.plot(ty_xj2, iy2_yj, 'g-', label='IW1')
+      ax2.plot(ty_xj2[1:], netMassExtract, 'y-', label='Net-Mass')
 
       # overall graph and plot features such as titles, axis, lables, plot, etc - also includes y axis limits
-      ax2.set_ylim([-400, 500])
-      ax1.set_ylim([-400, 500])
+      ax2.set_ylim([0, 40])
+      ax1.set_ylim([0, 20])
       ax1.legend(loc=2)
       ax2.legend(loc=0)
       ax1.set_ylabel('interpolated cumulative production mass [kg]')
