@@ -83,14 +83,6 @@ if __name__ == "__main__":
 
       plt.show()
 
-# TO DO:
-# - In sdlab_functions.py, COMPLETE the functions SPLINE_COEFFICIENT_MATRIX, SPLINE_RHS, and
-#   SPLINE_INTERPOLATE.
-# - Write a Newton-Cotes integration function OR find and use a built-in Python function.
-# - Produce a plot of NET MASS CHANGE as a function of time.
-# - ANSWER the questions in sdlab_questions.txt
-
-
 # HINTS:
 # - To add or difference two quantities, they should be measured or interpolated at the same time.
 # - You should consider a sensible strategy for the event that an interpolation point lies outside 
