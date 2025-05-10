@@ -1,7 +1,4 @@
-# ENGSCI233: Lab - Sampled Data
-# sdlab_earthquakes.py
-
-from matplotlib import pyplot as plt  # MATPLOTLIB is THE plotting module for Python
+from matplotlib import pyplot as plt
 import numpy as np
 from numpy.linalg import solve
 from sdlab_functions import *
@@ -9,13 +6,6 @@ import os
 
 # PURPOSE:
 # To INVESTIGATE a dataset using interpolation and integration methods.
-
-# PREPARATION:
-# Complete the activities in sdlab_practice.py.
-
-# SUBMISSION:
-# - YOU MUST submit a plot of NET MASS CHANGE as a function of time (sdlab_earthquakes.png)
-# - You MUST submit this file to complete the lab.
 
 def cumulative_mass(xj, yj):
 
@@ -43,6 +33,7 @@ if __name__ == "__main__":
       ty, iy = np.genfromtxt(open(dir_path + '/' + 'IW1.dat'), delimiter=',', skip_header=1).T
 
       # interpolation occurs through comparison between predicted and known timestamps
+      # xi index also impact yi index
 
       tm_xj = np.linspace(tq[0],tq[-1],len(tm))  
       pm1_yj = interpolate(tm,pm1,tm_xj)
@@ -91,16 +82,6 @@ if __name__ == "__main__":
       ax2.set_title('Cumulative Net Mass of production and injection at field X')
 
       plt.show()
-
-# net mass change and cumulative of the interpolated data
-# net mass chnage will be processed from when injection takes effect first - only 1993.5 onwards
-
-# my first measurement should be done on interpolated_xj[1] to inclusive final interpolated_xj[-1]
-
-# interpolation points -- linespacing -- times (years) this is based on missing data in IW1
-# original xi is tq array
-
-# after full interpolation - only for cumulative mass
 
 # TO DO:
 # - In sdlab_functions.py, COMPLETE the functions SPLINE_COEFFICIENT_MATRIX, SPLINE_RHS, and
