@@ -62,8 +62,8 @@ if __name__ == "__main__":
       ax2.plot(ty_xj2[1:], netMassExtract, 'y-', label='Net-Mass')
 
       # overall graph and plot features such as titles, axis, lables, plot, etc - also includes y axis limits
-      ax2.set_ylim([0, 40])
-      ax1.set_ylim([0, 20])
+      ax2.set_ylim([-0.2, 35])
+      ax1.set_ylim([0, 12.5])
       ax1.legend(loc=2)
       ax2.legend(loc=0)
       ax1.set_ylabel('interpolated cumulative production mass [kg]')
@@ -72,15 +72,3 @@ if __name__ == "__main__":
       ax2.set_title('Cumulative Net Mass of production and injection at field X')
 
       plt.show()
-
-# HINTS:
-# - To add or difference two quantities, they should be measured or interpolated at the same time.
-# - You should consider a sensible strategy for the event that an interpolation point lies outside 
-#   the range of data (extrapolation).
-# - MASS RATE is a derivative (per unit time) and CUMULATIVE MASS is its integral. 
-# - You will be assessed on the ability of your figure to convey information. Things that help:
-#    o Sensible labels (and units) for the axes.
-#    o A legend.
-#    o Sensible use of lines versus markers.
-#    o Juxtaposition of information in a way that highlights correlation.
-# - The plotting exercise in PRACTICE TASK ONE is relevant here.
