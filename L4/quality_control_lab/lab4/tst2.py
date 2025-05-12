@@ -1,28 +1,26 @@
-# tests/test_init_field.py
-# field initialisation testing
-import pytest
-from connect_four import game_is_won
+from connect_four import init_field, drop_token, game_is_won
 
-def vertical():
-    field = init_field()
-    # default Connect-4 is 6 rows × 7 cols
-    assert len(field) == 6
-    assert all(len(row) == 7 for row in field)
-    assert all(cell is None for row in field for cell in row)
+def test_horizontal_win():
+    field, _ = init_field(rows=6, columns=7)
+    for col in range(4):
+        drop_token(field, col, True)
+    assert game_is_won(field) == True
 
-def horizontal():
-    field = init_field(rows=4, cols=4)
-    assert len(field) == 4
-    assert all(len(row) == 4 for row in field)
+def test_vertical_win():
+    field, _ = init_field()
+    for _ in range(4):
+        drop_token(field, 0, True)
+    assert game_is_won(field) == True
 
-def NE():
-    with pytest.raises(ValueError):
-        init_field(rows=0, cols=7)
-    with pytest.raises(TypeError):
-        init_field(rows="six", cols=7)
+def test_diagonal_win():
+    field, _ = init_field()
+    for i in range(4):
+        for _ in range(i):
+            drop_token(field, i, False)
+        drop_token(field, i, True)
+    assert game_is_won(field) == True
 
-def NW():
-    with pytest.raises(ValueError):
-        init_field(rows=0, cols=7)
-    with pytest.raises(TypeError):
-        init_field(rows="six", cols=7)
+def test_draw():
+    field, _ = init_field(rows=1, columns=1)
+    drop_token(field, 0, True)
+    assert game_is_won(field) == 'nobody'
