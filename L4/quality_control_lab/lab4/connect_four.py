@@ -34,7 +34,7 @@ def drop_token(field, col, player, symbol={True: 'x', False: 'o'}):
     field.reverse()
     for row in field:
         if row[col] == '.':
-            row[col] = 'x'
+            row[col] = symbol.get(player)
             break
     field.reverse()
     pprint(field)
