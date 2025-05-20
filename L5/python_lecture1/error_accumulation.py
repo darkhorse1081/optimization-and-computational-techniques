@@ -38,17 +38,17 @@ if __name__ == '__main__':
     u32 = np.float32(u64)
     u16 = np.float16(u64)
 
-    # # compute vector sum of increasing number of components, i
-    # for i in [10, 100, 1000, 10000, 100000]:
-    #
-    #     # compare single and double precision
-    #     e32 = sum(i, u64[:i] - u32[:i])
-    #
-    #     # compare half and double precision
-    #     e16 = sum(i, u64[:i] - u16[:i])
-    #
-    #     # display to screen
-    #     print(("i={:7d}: e32={:18.18f}  e16={:18.18f}").format(i, e32, e16))
+    # compute vector sum of increasing number of components, i
+    for i in [10, 100, 1000, 10000, 100000]:
+    
+        # compare single and double precision
+        e32 = sum(i, u64[:i] - u32[:i])
+    
+        # compare half and double precision
+        e16 = sum(i, u64[:i] - u16[:i])
+    
+        # display to screen
+        print(("i={:7d}: e32={:18.18f}  e16={:18.18f}").format(i, e32, e16))
 
     # compute dot product of increasing numbers of components
     for i in [10, 100, 1000, 10000, 100000]:
