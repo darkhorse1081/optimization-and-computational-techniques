@@ -15,6 +15,7 @@
 # imports
 import numpy as np
 from copy import copy
+import os 
 
 
 # this function is complete
@@ -42,18 +43,21 @@ def lu_read(filename):
 	return A, b.T
 
 	
-# **this function is incomplete**
+# by default pivot is false
 def lu_factor(A, pivot=False):
 		
-	# get dimensions of square matrix 
-	n = np.shape(A)[0] 	
-	
-	# create initial row swap vector: p = [0, 1, 2, ... n]
-	p = np.arange(n) 		
+	n = np.shape(A)[0] 	# -- 4
+	p = np.arange(n) # -- [0,1,2,3] create initial row swap vector: p = [0, 1, 2, ... n]
 
 	# loop over each row in the matrix
 	# **hint** what is the pivot index, row and column?
-	for i in range(n):		
+
+	U = A
+	L = 0*A
+	for i in range(n): # - diag 1s in lower - matrix 0s prior
+		L[n][n] = 1
+
+	for i in range(n):		# 0->3
 		
 		# Step 2: Row swaps for partial pivoting
 		#    DO NOT attempt until Steps 0 and 1 below are confirmed to be working.
@@ -63,15 +67,24 @@ def lu_factor(A, pivot=False):
 				
 			# **delete the command below when code has been written**
 			pass
-			
 
-		# Step 0: Get the pivot value
-		#pivot_value = ???
-		
-		# Step 1: Perform the row reduction operations 
-		# - make sure to modify A in place
-		# **hint** Pseudocode the key steps first (loop over which rows? subtract how much from what?)				 	
-		 
+		if n != p[-1]:
+			for i in range(n+1,p[-1]+1): # 1 - populate lower triangular matrix -- by row
+				L[i][n] = U[i][n]/U[n][n] # -> pivot value -- L fixed
+
+			for i2 in range(n+1,p[-1]+1): # upper target quadrant for calc -- rows
+				for j2 in range(p[-1]+1): # -- cols
+					U[i2][j2] =  U[i2][j2] - (L[i2][n]*U[n][j2]) # - u fixed
+		else:
+			break	
+
+	# replace 0s in U with 
+	for k1 in range(n-1): # - [0,1,2]
+		for z1 in range(k1+1, n): # - 0-3.1-3.2-3
+			U[z1][k1] = L[z1][k1]
+
+	A = U
+
 	return A, p
 
 	
