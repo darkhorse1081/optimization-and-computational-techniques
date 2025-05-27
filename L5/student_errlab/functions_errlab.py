@@ -55,9 +55,9 @@ def lu_factor(A, pivot=False):
 	U = A
 	L = 0*A
 	for i in range(n): # - diag 1s in lower - matrix 0s prior
-		L[n][n] = 1
+		L[i][i] = 1
 
-	for i in range(n):		# 0->3
+	for i in range(n):		# 0->3 -- iteration update deicides the pivot
 		
 		# Step 2: Row swaps for partial pivoting
 		#    DO NOT attempt until Steps 0 and 1 below are confirmed to be working.
@@ -80,7 +80,7 @@ def lu_factor(A, pivot=False):
 
 	# replace 0s in U with 
 	for k1 in range(n-1): # - [0,1,2]
-		for z1 in range(k1+1, n): # - 0-3.1-3.2-3
+		for z1 in range(k1+1, n): # -> 0-3.1-3.2-3
 			U[z1][k1] = L[z1][k1]
 
 	A = U

@@ -18,12 +18,10 @@ def test_lu_factor_nopivot():
     """
     Test implemention of LU factorisation without partial pivoting.
     """
-    # read in from a data file the matrix A and vector b
-    dir_path = os.path.dirname(os.path.realpath(__file__))
     [a, b] = lu_read('system1.txt')
 
     # set your 2D NumPy array containing the combined LU matrices, which you worked out by hand
-    lu_exact = np.array([ [ , , , ], [ , , , ], [ , , , ], [ , , , ] ])
+    lu_exact = np.array([ [ 2, 3, -4, 2], [ -2, 1, -2, 1], [ 1, -1, 3, -1], [ -3, 2, 2, 2] ])
 
     # call the lu_factor function
     lu, p = lu_factor(a)
