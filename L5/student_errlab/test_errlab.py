@@ -25,6 +25,8 @@ def test_lu_factor_nopivot():
 
     # call the lu_factor function
     lu, p = lu_factor(a)
+    
+    test = 5
 
     # compare your hard-code matrix with that returned by lu_factor
     assert norm(lu - lu_exact) < tol

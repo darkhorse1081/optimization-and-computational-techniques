@@ -68,13 +68,13 @@ def lu_factor(A, pivot=False):
 			# **delete the command below when code has been written**
 			pass
 
-		if n != p[-1]:
-			for i in range(n+1,p[-1]+1): # 1 - populate lower triangular matrix -- by row
-				L[i][n] = U[i][n]/U[n][n] # -> pivot value -- L fixed
+		if i != p[-1]: # p[-1] -> if last value ignore next iteration
+			for m in range(i+1,p[-1]+1): # 1 - populate lower triangular matrix -- by row
+				L[m][i] = U[m][i]/U[i][i] # -> pivot value -- L fixed
 
-			for i2 in range(n+1,p[-1]+1): # upper target quadrant for calc -- rows
+			for i2 in range(i+1,p[-1]+1): # upper target quadrant for calc -- rows
 				for j2 in range(p[-1]+1): # -- cols
-					U[i2][j2] =  U[i2][j2] - (L[i2][n]*U[n][j2]) # - u fixed
+					U[i2][j2] =  U[i2][j2] - (L[i2][i]*U[i][j2]) # - u fixed
 		else:
 			break	
 
