@@ -49,18 +49,14 @@ def lu_factor(A, pivot=False):
 	n = np.shape(A)[0] 	# -- 4
 	p = np.arange(n) # -- [0,1,2,3] create initial row swap vector: p = [0, 1, 2, ... n]
 
-	# loop over each row in the matrix
-	# **hint** what is the pivot index, row and column?
-
 	U = A
 	L = 0*A
 	for i in range(n): # - diag 1s in lower - matrix 0s prior
 		L[i][i] = 1
 
-	for i in range(n):		# 0->3 -- iteration update deicides the pivot
+	for i in range(n): # 0->3 -- iteration update deicdes the pivot
 		
 		# Step 2: Row swaps for partial pivoting
-		#    DO NOT attempt until Steps 0 and 1 below are confirmed to be working.
 		if pivot:
 			# **hint** Pseudocode the key steps below (locating pivots, row swaps etc).
 			# **note** When swapping rows, use the copy() command, i.e., temp = copy(A[2,:])
@@ -68,34 +64,32 @@ def lu_factor(A, pivot=False):
 			# **delete the command below when code has been written**
 			pass
 
-		if i != p[-1]: # p[-1] -> if last value ignore next iteration
-			for m in range(i+1,p[-1]+1): # 1 - populate lower triangular matrix -- by row
-				L[m][i] = U[m][i]/U[i][i] # -> pivot value -- L fixed
+		if i != p[-1]: # p[-1] -> if last value ignore next iteration 
+			for m in range(i+1,p[-1]+1): # -> populate matrix by row - L pivot fixed
+				L[m][i] = U[m][i]/U[i][i] 
 
 			for i2 in range(i+1,p[-1]+1): # upper target quadrant for calc -- rows
-				for j2 in range(p[-1]+1): # -- cols
-					U[i2][j2] =  U[i2][j2] - (L[i2][i]*U[i][j2]) # - u fixed
+				for j2 in range(p[-1]+1):
+					U[i2][j2] =  U[i2][j2] - (L[i2][i]*U[i][j2])
 		else:
 			break	
 
+	U_copy = U
 	# replace 0s in U with 
 	for k1 in range(n-1): # - [0,1,2]
 		for z1 in range(k1+1, n): # -> 0-3.1-3.2-3
 			U[z1][k1] = L[z1][k1]
 
 	A = U
-
-	return A, p
+	return A, p, L, U_copy
 
 	
 # **this function is incomplete**
-def lu_forward_sub(L, b, p=None):
+def lu_forward_sub(L, b, p=None): # Ly = b
 	
 	# check shape of L consistent with shape of b (for matrix multiplication L^T*b)
-	assert np.shape(L)[0] == len(b), 'incompatible dimensions of L and b'
-	
-	# Step 0: Get matrix dimension										
-	# **hint** See how this is done in lu_factor()
+	n = np.shape(L)[0] 
+	assert np.shape(L)[0] == len(b)
 		
 	# Step 2: Perform partial pivoting row swaps on RHS
 	if p is not None:
@@ -104,22 +98,38 @@ def lu_forward_sub(L, b, p=None):
 				
 		# **delete the command below when code has been written**
 		pass
-	
-	# Step 1: Perform forward substitution operations
-	# - make sure to modify b in place
-	# **hint** Pseudocode the key steps below (loops, dot products etc.)   	
-		
+
+	y = np.zeros(n)
+	n2 = 0
+	for i in range(n): # 0->3
+		if i == 0:
+			y[i] = b[i]
+		else:
+			n2 = n2 + 1
+			y[i] = (b[i]-(np.dot(L[i][:n2],y[:n2])))/L[i][i]
+
+	b = y		
 	return b
+
 
 	
 # **this function is incomplete**
 def lu_backward_sub(U, y):
 	
 	# check shape consistency
-	assert np.shape(U)[0] == len(y), 'incompatible dimensions of U and y'
+	n = np.shape(U)[0] 
+	assert np.shape(U)[0] == len(y)
+
 	
 	# Perform backward substitution operations
-			
-	# Return 
-	# **delete the pass command below when code has been written**
-	pass
+	x = np.zeros(n)
+	n4 = n-1
+	for i in range(n-1,(n-n)-1,-1):
+		if i == n-1:
+			x[i] = y[i]/U[i][i]
+		else:
+			n4 = n4 - 1
+			x[i] = (y[i]-(np.dot(U[i][n-1:n4:-1],x[n-1:n4:-1])))/U[i][i]
+
+	return x
+	
