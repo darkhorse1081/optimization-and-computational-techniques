@@ -60,6 +60,10 @@ def lu_factor(A, pivot=False):
 			# **hint** Pseudocode the key steps below (locating pivots, row swaps etc).
 			# **note** When swapping rows, use the copy() command, i.e., temp = copy(A[2,:])
 			temp = copy(A[np.argmax(A[1:][0])])
+			update = A[0].copy()
+			A[0] = temp
+			A[np.argmax(A[1:][0])] = update
+
 
 		if i != p[-1]: # p[-1] -> if last value ignore next iteration 
 			for m in range(i+1,p[-1]+1): # -> populate matrix by row - L pivot fixed
