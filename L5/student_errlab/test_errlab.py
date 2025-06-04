@@ -18,19 +18,14 @@ def test_lu_factor_nopivot():
 
     [a, b] = lu_read('system1.txt')
     lu_exact = np.array([ [ 2, 3, -4, 2], [ -2, 1, -2, 1], [ 1, -1, 3, -1], [ -3, 2, 2, 2] ]) # expected
-
-    # call the lu_factor function
-    lu, p, L, U_copy = lu_factor(a,True)
-
-    # compare your hard-code matrix with that returned by lu_factor
+    lu, p = lu_factor(a, True)
     assert norm(lu - lu_exact) < tol
 
 def test_lu_forward_sub_nopivot():
 
     [a, b] = lu_read('system1.txt')
-    lu, p, L, U_copy = lu_factor(a)
-    b2 = lu_forward_sub(L, b, p=None)
-
+    lu, p = lu_factor(a)
+    b2 = lu_forward_sub(lu, b, p=None)
     b_exact = np.array([4, 0, 5, 8])
     assert norm(b2 - b_exact) < tol
 
@@ -38,11 +33,9 @@ def test_lu_forward_sub_nopivot():
 def test_lu_backward_sub_nopivot():
 
     [a, b] = lu_read('system1.txt')
-    A,p,L,U_copy = lu_factor(a)
-
-    b2 = lu_forward_sub(L, b, p=None)
-
-    x2 = lu_backward_sub(U_copy,b2)
+    lu, p = lu_factor(a)
+    b2 = lu_forward_sub(lu, b, p=None)
+    x2 = lu_backward_sub(lu,b2)
 
     x_exact = np.array([1, 2, 3, 4])
     assert norm(x2 - x_exact) < tol
