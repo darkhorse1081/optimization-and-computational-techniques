@@ -20,7 +20,7 @@ def test_lu_factor_nopivot():
     lu_exact = np.array([ [ 2, 3, -4, 2], [ -2, 1, -2, 1], [ 1, -1, 3, -1], [ -3, 2, 2, 2] ]) # expected
 
     # call the lu_factor function
-    lu, p, L, U_copy = lu_factor(a)
+    lu, p, L, U_copy = lu_factor(a,True)
 
     # compare your hard-code matrix with that returned by lu_factor
     assert norm(lu - lu_exact) < tol

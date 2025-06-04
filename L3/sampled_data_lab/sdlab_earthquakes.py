@@ -24,18 +24,18 @@ if __name__ == "__main__":
       # interpolation occurs through comparison between predicted and known timestamps
       # xi index also impact yi index
 
-      tm_xj = np.linspace(tq[0],tq[-1],len(tm))  
+      tm_xj = np.linspace(tq[0],tq[-1],len(tm))
       pm1_yj = interpolate(tm,pm1,tm_xj)
 
       # first interpolation for tq (PW2) data - how to match with pw1
       # tq data interpolated with respect to tm
 
-      tq_xj = np.linspace(tq[0],tq[-1],len(tm)) 
+      tq_xj = np.linspace(tq[0],tq[-1],len(tm))
       pm2_yj = interpolate(tq,pm2,tq_xj)
 
       # interpolation for ty (IW1) data - how to extrapolate
 
-      ty_xj = np.linspace(tq[0],tq[-1],len(tm)) 
+      ty_xj = np.linspace(tq[0],tq[-1],len(tm))
       m = np.argmax(np.logical_and(ty[0] >= ty_xj[:-1], ty[0] <= ty_xj[1:]))
       n = np.argmax(np.logical_and(ty[-1] >= ty_xj[:-1], ty[-1] <= ty_xj[1:]))
       ty_xj2 = ty_xj[m:n+1] # new interpolate data

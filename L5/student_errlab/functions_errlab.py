@@ -49,7 +49,7 @@ def lu_factor(A, pivot=False):
 	n = np.shape(A)[0] 	# -- 4
 	p = np.arange(n) # -- [0,1,2,3] create initial row swap vector: p = [0, 1, 2, ... n]
 
-	U = A
+	U = A.copy()
 	L = 0*A
 	for i in range(n): # - diag 1s in lower - matrix 0s prior
 		L[i][i] = 1
@@ -60,9 +60,11 @@ def lu_factor(A, pivot=False):
 		if pivot:
 			# **hint** Pseudocode the key steps below (locating pivots, row swaps etc).
 			# **note** When swapping rows, use the copy() command, i.e., temp = copy(A[2,:])
+			
+			update = np.argmax(U[1:][0])
+			temp = copy(U[update])
 				
 			# **delete the command below when code has been written**
-			pass
 
 		if i != p[-1]: # p[-1] -> if last value ignore next iteration 
 			for m in range(i+1,p[-1]+1): # -> populate matrix by row - L pivot fixed
@@ -74,7 +76,7 @@ def lu_factor(A, pivot=False):
 		else:
 			break	
 
-	U_copy = U
+	U_copy = U.copy()
 	# replace 0s in U with 
 	for k1 in range(n-1): # - [0,1,2]
 		for z1 in range(k1+1, n): # -> 0-3.1-3.2-3
