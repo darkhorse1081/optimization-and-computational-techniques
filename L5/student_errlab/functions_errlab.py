@@ -48,8 +48,9 @@ def lu_factor(A, pivot=False):
 		
 	n = np.shape(A)[0] 	# -- 4
 	p = np.arange(n) # -- [0,1,2,3] create initial row swap vector: p = [0, 1, 2, ... n]
+	z = copy(p)
 
-	L = 0*A.copy()
+	L = 0*A
 	for i in range(n): # - diag 1s in lower - matrix 0s prior
 		L[i][i] = 1
 
@@ -59,18 +60,25 @@ def lu_factor(A, pivot=False):
 		if pivot:
 			# **hint** Pseudocode the key steps below (locating pivots, row swaps etc).
 			# **note** When swapping rows, use the copy() command, i.e., temp = copy(A[2,:])
-			temp = copy(A[np.argmax(A[1:][0])])
-			update = A[0].copy()
-			A[0] = temp
-			A[np.argmax(A[1:][0])] = update
+			dx = i + np.argmax(np.absolute(A[i:n,i]))
+			p[i] = dx
+			temp = copy(A[i,:])   # if i dont do copy() -> next line A[i] = A[dx] also updates previous A[i]
+			A[i,:] = A[dx,:]
+			A[dx,:] = temp # KEY -> if i apply raw values then must use copy() else not for loop calculations
 
+		if i != 0 and i != z[-1]:
+			temp2 = copy(L[i,i-1]) # -- wont reach 4 -> p[-1] should remain 3
+			L[i,i-1] = L[p[i-1],i-1]
+			L[p[i-1],i-1] = temp2
 
-		if i != p[-1]: # p[-1] -> if last value ignore next iteration 
-			for m in range(i+1,p[-1]+1): # -> populate matrix by row - L pivot fixed
+			# do swap for L
+
+		if i != z[-1]: # p[-1] -> if last value ignore next iteration 
+			for m in range(i+1,z[-1]+1): # -> populate matrix by row - L pivot fixed
 				L[m][i] = A[m][i]/A[i][i] 
 
-			for i2 in range(i+1,p[-1]+1): # upper target quadrant for calc -- rows
-				for j2 in range(p[-1]+1):
+			for i2 in range(i+1,z[-1]+1): # upper target quadrant for calc -- rows
+				for j2 in range(z[-1]+1):
 					A[i2][j2] =  A[i2][j2] - (L[i2][i]*A[i][j2])
 		else:
 			break	
@@ -92,11 +100,15 @@ def lu_forward_sub(L, b, p=None): # Ly = b
 		
 	# Step 2: Perform partial pivoting row swaps on RHS
 	if p is not None:
-		# **hint** Pseudocode the key steps below	
-		# **note** When swapping values, use the copy() command, i.e., temp = copy(y[i])				
-				
-		# **delete the command below when code has been written**
-		pass
+		
+		for k in range(n):
+			z = copy(p[k])
+
+			# now swappping in b vector using temp variable
+			temp = copy(b[k])
+			b[k] = b[z]
+			b[z] = temp
+		
 
 	y = np.zeros(n)
 	n2 = 0
