@@ -17,7 +17,7 @@ def step_ieuler(f, tk, yk, h, args=None):
 	# impoved euler numerical for only one step 
 	f0 = f(tk,yk,*args)
 	f1 = f(tk+h, yk+h*f0,*args)
-	yk2 = yk + h((f0+f1)/2)
+	yk2 = yk + h*((f0+f1)/2)
 	
 	return yk2
 
@@ -26,12 +26,13 @@ def step_rk4(f, tk, yk, h, args=None):
 	if args is None:
 		args = []
 
+	# runge kutta solution for a single step - four functions to be interchanged
 	f0 = f(tk,yk,*args)
 	f1 = f(tk+(h/2), yk+((h*f0)/2),*args)
 	f2 = f(tk+(h/2),yk+((h*f1)/2),*args)
 	f3 = f(tk+h, yk+h*f2,*args)
 
-	yk2 = yk + h((f0+2*f1+2*f2+f3)/6)
+	yk2 = yk + h*((f0+2*f1+2*f2+f3)/6)
 	
 	return yk2
 
@@ -68,6 +69,8 @@ def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
 	"""
 	if args is None:
 		args = []
+
+	
 	pass
 
 
