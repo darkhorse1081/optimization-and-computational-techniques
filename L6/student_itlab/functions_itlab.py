@@ -69,9 +69,20 @@ def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
 	"""
 	if args is None:
 		args = []
-
 	
-	pass
+	tspan = (t1 - t0)/h
+	t = np.fromiter((i+h for i in range(t0,t1+1)),dtype=int) # y array populated with t values
+	y = np.zeros(len(t))
+
+
+	if method == 'rk4':
+		for i in range(tspan): # how many points to iter
+			y[i] = step_rk4(f(t0,y0,*args),t0,y0,h,*args)
+	else:
+		for i in range(tspan): # how many points to iter
+			y[i] = step_ieuler(f(t0,y0,*args),t0,y0,h,*args)
+
+	return t,y
 
 
 def dndt_quota(t, n, r, k, f0):
