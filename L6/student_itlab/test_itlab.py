@@ -7,7 +7,6 @@ from numpy.linalg import norm
 
 tol = 1.e-10
 
-
 def test_step_ieuler():
 
     value = step_ieuler(dydt1,0.,1.,2.)
@@ -32,14 +31,14 @@ def test_step_rk4():
 
 
 def test_solve_explicit_rk():
-    pass
 
-def dydt1(t, y):
-    return t - y
+    ysoln_exact = np.array([1.0,3.0,5.0,7.0,9.0])
+    tsoln, ysoln = solve_explicit_rk(dydt1,0,10,1,2.5,'ieuler')
+    assert norm(ysoln - ysoln_exact) < tol
 
-def dydt2(t, y, a, b):
-    return a * t - b * y
+    print("Test Success")
 
 
 test_step_ieuler()
 test_step_rk4()
+test_solve_explicit_rk()
