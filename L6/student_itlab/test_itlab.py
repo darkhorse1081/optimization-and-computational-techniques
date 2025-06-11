@@ -32,13 +32,20 @@ def test_step_rk4():
 
 def test_solve_explicit_rk():
 
+    # test branch for euler
     ysoln_exact = np.array([1.0,3.0,5.0,7.0,9.0])
-    tsoln, ysoln = solve_explicit_rk(dydt1,0,10,1,2.5,'ieuler')
+    tsoln, ysoln = solve_explicit_rk(dydt1,0,8,1,2,'ieuler')
     assert norm(ysoln - ysoln_exact) < tol
 
-    print("Test Success")
+    # test branch for rk4
+    ysoln_exact = np.array([1.0,5/3,3.222222222222223,5.074074074074074,7.024691358024692])
+    tsoln, ysoln = solve_explicit_rk(dydt1,0,8,1,2,'rk4')
+    assert norm(ysoln - ysoln_exact) < tol
 
 
-test_step_ieuler()
-test_step_rk4()
+
+
+
+# test_step_ieuler()
+# test_step_rk4()
 test_solve_explicit_rk()

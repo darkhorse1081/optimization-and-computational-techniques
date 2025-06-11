@@ -21,7 +21,7 @@ def step_ieuler(f, tk, yk, h, args=None):
 	# impoved euler numerical for only one step 
 	f0 = f(tk,yk,*args)
 	f1 = f(tk+h, yk+h*f0,*args)
-	yk2 = yk + h*((f0+f1)/2)
+	yk2 = float(yk + h*((f0+f1)/2))
 	
 	return yk2
 
@@ -36,7 +36,7 @@ def step_rk4(f, tk, yk, h, args=None):
 	f2 = f(tk+(h/2),yk+((h*f1)/2),*args)
 	f3 = f(tk+h, yk+h*f2,*args)
 
-	yk2 = yk + h*((f0+2*f1+2*f2+f3)/6)
+	yk2 = float(yk + h*((f0+2*f1+2*f2+f3)/6))
 	
 	return yk2
 
@@ -85,15 +85,12 @@ def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
 
 	if method == 'rk4':
 		for i in range(1,tspan): # how many points to iter 0-4
-			y[i] = step_rk4(f,t0,y0,t[i]-t0,*args) # has to link to steps size h
+			y[i] = step_rk4(f,t[i-1],y[i-1],h,*args) # has to link to steps size h
 	else:
 		for i in range(1,tspan): # how many points to iter
-			y[i] = (step_ieuler(f,t0,y0,h,*args)+(h*(i-1)))
+			y[i] = step_ieuler(f,t[i-1],y[i-1],h,*args)
 
 	return t,y
-
-	# problem with h incrmenet step - tspan in range cannot be float
-
 
 
 def dndt_quota(t, n, r, k, f0):
