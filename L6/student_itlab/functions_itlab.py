@@ -14,6 +14,10 @@ def dydt1(t, y):
 def dydt2(t, y, a, b):
     return a * t - b * y
 
+def dydt_cos(t, y):
+    return math.cos(math.radians(t))
+
+
 def step_ieuler(f, tk, yk, h, args=None):
 	if args is None:
 		args = []
