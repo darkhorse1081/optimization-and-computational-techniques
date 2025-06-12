@@ -45,35 +45,9 @@ def step_rk4(f, tk, yk, h, args=None):
 	return yk2
 
 def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
-	"""	Compute solution of initial value ODE problem using explicit RK method.
-
-		Parameters
-		----------
-		f : callable
-			Derivative function.
-		t0 : float
-			Initial value of independent variable.
-		t1 : float
-			Final value of independent variable.
-		y0 : float
-			Initial value of solution.
-		h : float
-			Step size.
-		method : str
-			String specifying RK method, either 'rk4' or 'ieuler'. Default is 'rk4'.
-		args : iterable
-			Optional parameters to pass into derivative function.
-
-		Returns
-		-------
-		t : array-like
-			Independent variable at solution.
-		y : array-like
-			Solution.
-
-		Notes
-		-----
-		Assumes that order of inputs to f is f(t, y, *args).
+	""" 
+	required to compute numerical solutions for arbitary array size
+	
 	"""
 	if args is None:
 		args = []
