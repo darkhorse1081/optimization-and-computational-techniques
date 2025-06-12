@@ -45,8 +45,8 @@ def step_rk4(f, tk, yk, h, args=None):
 	return yk2
 
 def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
-	
-	""" required to compute numerical solutions for arbitary array size
+	""" 
+	required to compute numerical solutions for arbitary array size
 	"""
 	if args is None:
 		args = []
@@ -71,7 +71,10 @@ def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
 
 
 def dndt_quota(t, n, r, k, f0):
-	pass
+	"""
+	
+	"""
+
 
 
 def dndt_kaitiakitanga(t, n, r, k, f0, fr):
