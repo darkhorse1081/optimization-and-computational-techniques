@@ -57,6 +57,7 @@ def test_solve_explicit_rk():
     print("Test Success")
 
 
-test_step_ieuler()
-test_step_rk4()
-test_solve_explicit_rk()
+# test_step_ieuler()
+# test_step_rk4()
+# test_solve_explicit_rk()
+

@@ -72,14 +72,62 @@ def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
 
 def dndt_quota(t, n, r, k, f0):
 	"""
+	t = time/years
+	n = fish population
+	r = constant birth rate
+	k = constant carrying capacity
+	f0 = annual intake of fish
+
+	fixed number of fish taken from population each year - to meet 'quota'
 	
+	non-sustainable - even if population declined - quota remains the same.
+
 	"""
+	return r*n*(1-(n/k))-f0 # fish taken from population -> quota per year
 
 
 
 def dndt_kaitiakitanga(t, n, r, k, f0, fr):
-	pass
 
+	"""
+	fish quotation - <= f0 // n*fr
+	"""
+
+	if (fr*n) > f0:
+		return dndt_quota(t, n, r, k, f0)
+	else:
+		return dndt_quota(t, n, r, k, fr*n)
 
 def dndt_rahui(t, n, r, k, f0, x):
-	pass
+
+	"""
+	t = time/years
+	n = fish population
+	r = constant birth rate
+	k = constant carrying capacity
+	f0 = annual intake of fish
+
+	fixed number of fish taken from population each year - to meet 'quota'
+		quota - always fraction of current population
+
+	10k fish - quota (nominal)
+	annual - 13%
+
+	50k fish  -> 50k*0.13 = 6500 < 10k -> less than nominal
+	if population ->100k
+		100k*0.13 = 13k > 10k -> greater than nominal -> capped at 10k
+
+	
+	periodic - permitted for x years -> move out of area for x years -> resumes x years
+	rahui - operations move out area for x years -> 'after' x years of operation
+
+	"""
+
+	fish_q = dndt_quota(t, n, r, k, f0)
+	divs = t/x
+
+	for i in range(divs): # 50 years -> 2 yr rahui -> 0-24 (len=25)
+		if i % 2 == 0:
+			return fish_q
+
+	
