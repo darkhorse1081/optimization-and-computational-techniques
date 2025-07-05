@@ -55,31 +55,24 @@ def solve_explicit_rk(f, t0, t1, y0, h, method='rk4', args=None):
 	factor = (t1 - t0)/h # 
 	t = np.fromiter((t0 if i == 0 else h*factor
 			    if i == tspan-1 else t0+h*i 
-			    for i in range(tspan)),dtype=float) # y array populated with t values
+			    for i in range(tspan)),dtype=float) # t array populated with y values
 
 	y = np.zeros(len(t))
 	y[0] = y0
 
 	if method == 'rk4':
 		for i in range(1,tspan): # how many points to iter 0-4
-			y[i] = step_rk4(f,t[i-1],y[i-1],h,*args) # has to link to steps size h
+			y[i] = step_rk4(f,t[i-1],y[i-1],h,args) # has to link to steps size h
 	else:
 		for i in range(1,tspan): # how many points to iter
-			y[i] = step_ieuler(f,t[i-1],y[i-1],h,*args)
+			y[i] = step_ieuler(f,t[i-1],y[i-1],h,args)
 
 	return t,y
 
 
 def dndt_quota(t, n, r, k, f0):
 	"""
-	t = time/years
-	n = fish population
-	r = constant birth rate
-	k = constant carrying capacity
-	f0 = annual intake of fish
-
 	fixed number of fish taken from population each year - to meet 'quota'
-	
 	non-sustainable - even if population declined - quota remains the same.
 
 	"""
@@ -92,11 +85,10 @@ def dndt_kaitiakitanga(t, n, r, k, f0, fr):
 	"""
 	fish quotation - <= f0 // n*fr
 	"""
-
 	if (fr*n) > f0:
-		return dndt_quota(t, n, r, k, f0)
+		return r*n*(1-(n/k))-f0
 	else:
-		return dndt_quota(t, n, r, k, fr*n)
+		return r*n*(1-(n/k))-(fr*n)
 
 def dndt_rahui(t, n, r, k, f0, x):
 
@@ -123,11 +115,54 @@ def dndt_rahui(t, n, r, k, f0, x):
 
 	"""
 
-	fish_q = dndt_quota(t, n, r, k, f0)
-	divs = t/x
+	# 50/2 = 25
+	# 0-24
 
-	for i in range(divs): # 50 years -> 2 yr rahui -> 0-24 (len=25)
-		if i % 2 == 0:
-			return fish_q
+	# 1h, 2r
+	# 0: 1,2 - fish - 1
+	# 1: 3,4 - ig
+	# 2: 5,6 - fish - 3
+	# 3: 7,8 - ig
+	# 4: 9,10 - fish - 5
 
+# ------------------------
+	# 0,1 - fish
+	# 2,3 - ig
+	# 4,5 - fish 
+	# 6,7 - ig
+# ------------------------
+
+	# 5h, 2r
+	# 0: 5,10 - fish 1,2 - 1
+	# 1: 15,20 - ig 3,4
+	# 2: 25,30 - fish 5,6 - 3
+	# 3: 35,40 - ig 7,8
+	# 4: 45,50 - fish 9,10 - 5
+
+	# 10,15 2,3 
+	# 20,25 4,5 
+	# 30,35 6,7 
+
+	# 2h, 5r
+	#    1 2 3 4 5
+	# 0: 2,4,6,8,10 - fish - 1
+
+	#    6 7 8 9 10*
+	# 1: 12,14,16,18,20 - ig 
+
+	#   11 12 13 14 15
+	# 2: 22,24,26,28,30 - fish - 3
+
+	#   16 17 18 19 20
+	# 3: 32,34,36,38,40 - ig
+
+	#   21 22 23 24 25
+	# 4: 42,44,46,48,50 - fish - 5 
 	
+	if (int(t/x)%2):
+		return r*n*(1-n/k)
+	else:
+		return r*n*(1-n/k) - f0
+	
+
+

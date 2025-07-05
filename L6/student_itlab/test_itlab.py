@@ -29,7 +29,7 @@ def test_step_rk4():
     value3 = step_rk4(dydt1,0.,1.,2.)
     exact_val3 = 5/3
 
-    value4 = step_rk4(dydt2,0.,1.,2., [2.,1.])
+    value4 = step_rk4(dydt2,0.,1.,2.,[2.,1.])
     exact_val4 = 3
 
     assert norm(value3 - exact_val3) < tol
