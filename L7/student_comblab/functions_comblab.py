@@ -11,15 +11,43 @@ from matplotlib.collections import PatchCollection
 # TODO: complete as part of lab task 1
 def search(tree, search_value):
 	"""
+	tree -> creates all node instances with value + arc connections + values
+	tree -> contains-head
+	linked-list 
+
 	"""
-			
+
 	# initialise a linked list object as a queue, with head node as first item in queue
-	queue = LinkedList()
-	queue.append(tree.head)
+	queue = LinkedList() 
+	queue.append(tree.head) 
 
-	pass
+	node_final = 0
+	last_val_arc = queue.get_node(-1) # always get last node in the linked list before cycle
 
-	
+
+# while(not(node_final == and entire tree traversed):
+
+	if (not(last_val_arc.value.arcs_out == [])) and : # when daughter are there
+		value_xf = queue.pop(0) # returns linked-list-node object
+		if value_xf.value.value == search_value: # direct value found comaprison
+			node_final = nvalue_xf.value
+			break	 
+		else:
+			for node_id in last_val_arc.value.arcs_out:
+				queue.append(node_id.to_node)
+	elif (last_val_arc.value.arcs_out):
+
+	else: # -- no daughter
+		value_xf = queue.pop(-1)
+		if value_xf.value.value == search_value:
+			node_final = value_xf.value
+			break
+
+	return node_final
+
+	m = 5
+
+
 # TODO: complete as part of lab task 2
 def shortest_path(network, source_name, destination_name):
 	"""

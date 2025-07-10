@@ -27,3 +27,6 @@ def test_shortest_path_simple_A_to_F():
 
     # TODO - include your appropriate test in Task 2
     pass
+
+
+test_search_value_negative_three()

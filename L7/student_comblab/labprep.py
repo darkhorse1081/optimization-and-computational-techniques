@@ -16,4 +16,3 @@ unvisited_set.remove(network.get_node('A'))
 # SET demo 2 - node names in unvisited set
 unvisited_set = set([node.name for node in network.nodes])
 unvisited_set.remove('A')
-
