@@ -22,37 +22,40 @@ def search(tree, search_value):
 	queue.append(tree.head) 
 
 	node_final = 0
-	target_connection = []
 	last_val_arc = queue.get_node(-1) # always get last node in the linked list before cycle - c0
 	unvisited_set = set(tree.nodes) # loaded with tree node objects in nodes list
 
+	# for some reason in the pop method -1 and 0 doest not yield the same node if there is only one object 
+	# in the queue -- however works for 
 
-	while(not(node_final == search_value) and (set() == empty)):
-
+	while (not(node_final == search_value) and (len(unvisited_set) == 0)): # -- for check
+		
 		if (not(last_val_arc.value.arcs_out == []) and (queue.get_length == 1)): # when daughter are there
 			value_xf = queue.pop(0) # returns node object - if length is 1
 			unvisited_set.remove(value_xf)
 			if value_xf.value == search_value: # direct node object value for comparison
 				node_final = value_xf.name
-				break	 
+				break
 			else:
 				for node_id in last_val_arc.value.arcs_out: # find connections and append
 					queue.append(node_id.to_node)
 		elif (not(last_val_arc.value.arcs_out == []) and (queue.get_length > 1)): # if length is >1 and daughter
-			value_xf = queue.pop(0)
+			value_xf = queue.pop(-1)
 			unvisited_set.remove(value_xf)
 			if value_xf.value == search_value: # direct node object value for comparison
 				node_final = value_xf.name
-				break	 
+				break
 			else:
 				for node_id in last_val_arc.value.arcs_out: # find connections and append
 					queue.append(node_id.to_node)
 		else: # -- no daughter
-			value_xf = queue.pop(-1) # popping produces Node class object + removes from linked list
+			value_xf = queue.pop(0) # popping produces Node class object + removes from linked list
 			unvisited_set.remove(value_xf)
 			if value_xf.value == search_value:
 				node_final = value_xf.name
 				break
+		# does last-val-arc need update after changes to queue
+		last_val_arc = queue.get_node(-1)
 
 	return node_final
 
