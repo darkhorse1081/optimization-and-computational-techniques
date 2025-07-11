@@ -22,30 +22,39 @@ def search(tree, search_value):
 	queue.append(tree.head) 
 
 	node_final = 0
-	last_val_arc = queue.get_node(-1) # always get last node in the linked list before cycle
+	target_connection = []
+	last_val_arc = queue.get_node(-1) # always get last node in the linked list before cycle - c0
+	unvisited_set = set(tree.nodes) # loaded with tree node objects in nodes list
 
 
-# while(not(node_final == and entire tree traversed):
+	while(not(node_final == search_value) and (set() == empty)):
 
-	if (not(last_val_arc.value.arcs_out == [])) and : # when daughter are there
-		value_xf = queue.pop(0) # returns linked-list-node object
-		if value_xf.value.value == search_value: # direct value found comaprison
-			node_final = nvalue_xf.value
-			break	 
-		else:
-			for node_id in last_val_arc.value.arcs_out:
-				queue.append(node_id.to_node)
-	elif (last_val_arc.value.arcs_out):
-
-	else: # -- no daughter
-		value_xf = queue.pop(-1)
-		if value_xf.value.value == search_value:
-			node_final = value_xf.value
-			break
+		if (not(last_val_arc.value.arcs_out == []) and (queue.get_length == 1)): # when daughter are there
+			value_xf = queue.pop(0) # returns node object - if length is 1
+			unvisited_set.remove(value_xf)
+			if value_xf.value == search_value: # direct node object value for comparison
+				node_final = value_xf.name
+				break	 
+			else:
+				for node_id in last_val_arc.value.arcs_out: # find connections and append
+					queue.append(node_id.to_node)
+		elif (not(last_val_arc.value.arcs_out == []) and (queue.get_length > 1)): # if length is >1 and daughter
+			value_xf = queue.pop(0)
+			unvisited_set.remove(value_xf)
+			if value_xf.value == search_value: # direct node object value for comparison
+				node_final = value_xf.name
+				break	 
+			else:
+				for node_id in last_val_arc.value.arcs_out: # find connections and append
+					queue.append(node_id.to_node)
+		else: # -- no daughter
+			value_xf = queue.pop(-1) # popping produces Node class object + removes from linked list
+			unvisited_set.remove(value_xf)
+			if value_xf.value == search_value:
+				node_final = value_xf.name
+				break
 
 	return node_final
-
-	m = 5
 
 
 # TODO: complete as part of lab task 2
