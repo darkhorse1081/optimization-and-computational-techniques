@@ -12,6 +12,7 @@ def test_search_value_negative_three():
 
     # call your search algorithm for search_value of -3
     node_name = search(tree=tree, search_value=-3)
+    node_name2 = search(tree=tree, search_value=5)
     x = 5
 
     # TODO - include your appropriate test in Task 1
