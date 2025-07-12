@@ -11,12 +11,19 @@ def test_search_value_negative_three():
     tree.assign_values(val_dict={'A': 2, 'B': -1, 'D': 3, 'E': 0, 'F': -2, 'C': 1, 'G': -3, 'H': 4})
 
     # call your search algorithm for search_value of -3
-    node_name = search(tree=tree, search_value=-3)
-    node_name2 = search(tree=tree, search_value=5)
+    # node_name = search(tree=tree, search_value=-3)
+    node_name1 = search(tree=tree, search_value=2)
+    node_name2 = search(tree=tree, search_value=-1)
+    node_name3 = search(tree=tree, search_value=1)
+    node_name4 = search(tree=tree, search_value=3)
+    node_name5 = search(tree=tree, search_value=0)
+    node_name6 = search(tree=tree, search_value=-2)
+    node_name7 = search(tree=tree, search_value=-3)
+    node_name8 = search(tree=tree, search_value=4)
+    node_name9 = search(tree=tree, search_value=5)
+
     x = 5
 
-    # TODO - include your appropriate test in Task 1
-    pass
 
 
 def test_shortest_path_simple_A_to_F():
