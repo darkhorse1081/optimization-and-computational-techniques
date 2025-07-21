@@ -81,12 +81,59 @@ def shortest_path(network, source_name, destination_name):
 	# get node objects corresponding to source and destination names
 	source_node = network.get_node(source_name)
 	destination_node = network.get_node(destination_name)
+	current_node = source_node
+	unvisited_set = set()
 
-	pass
+ 	# # initilaising the node values
+	for i in network.nodes:
+		if not(i == source_node):
+			i.value = [float("Inf"), None]
+			unvisited_set.add(i.name)
+		else:
+			source_node.value = [0,None]
+			unvisited_set.add(i.name)
 
+	while not(current_node == destination_node):
+		
+		# find outward connections
+		out_nodes = []
+		arc_w = []
+		ascending_node = []
+		ascending_list = []
+
+		# only thing updated is the node value
+		for j in current_node.arcs_out:
+			out_nodes.append(j.to_node) # list of outgoing nodes for current node
+			arc_w.append(j.weight) # weight of corresponding outgoing
+			j.to_node.value[0] = j.weight + current_node.value[0] # short distance to node -> arc.weight + pre node distance
+			j.to_node.value[-1] = j.from_node # which node it arrived from
+
+		# sub-section responsible for sorting out corresponding distances -> selects lowest value
+
+		# find index table of elements
+
+		ascending_node = [None]*len(out_nodes) # arranges in order to pick smallest
+		for k in range(len(out_nodes)):
+			ascending_list[k] = out_nodes[index[k]]
+
+		# sorting arc weight distances in ascending order
+
+		# smallest distance from current node - remove from unvisited set
+		# comparison list - smallest accumulated distance or arc weight
+		unvisited_set.remove(current_node.name)
+
+
+		# update the weights to outgoing vertices from source -(relaxing)
+		# after relaxing -> filling distance/nodes values
+		#  - current/source - removed from set - considered visited
+
+		# next vertex -> shortest from source vertex
+		# update cumulative distance from source into current node
+		# relax 
+
+		# values -[] get updated as lower distance is examined
 
 # These classes and methods are complete, do not modify their code
-# The docstrings for these aren't as detailed as they could be, so you can update them for your own reference
 
 class LinkedListNode(object):
 	""" A class with methods for node object.

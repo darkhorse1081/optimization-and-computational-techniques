@@ -22,9 +22,13 @@ def test_search_value_negative_three():
     node_name8 = search(tree=tree, search_value=4)
     node_name9 = search(tree=tree, search_value=5)
 
-    x = 5
 
-
+    node_list = []
+    if node_name9 is not None:
+        node_list.append(node_name9)
+        tree.show(node_list)
+    else:
+        tree.show()
 
 def test_shortest_path_simple_A_to_F():
     # create network object
@@ -35,7 +39,16 @@ def test_shortest_path_simple_A_to_F():
     distance, path = shortest_path(network, 'A', 'F')
 
     # TODO - include your appropriate test in Task 2
+    if ( distance is not None and path is not None ): # path should return list of arcs from source to target
+        print("Shortest Distance from A to F...{}".format(distance))
+        print("Shortest Path from A to F ... {}".format(path))
+    else:
+        print(network.arcs)
+        print(network.nodes)
+        print("Shortest path not found")
+
     pass
 
 
-test_search_value_negative_three()
+# test_search_value_negative_three()
+test_shortest_path_simple_A_to_F()
