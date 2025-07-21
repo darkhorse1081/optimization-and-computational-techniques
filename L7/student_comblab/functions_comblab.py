@@ -83,8 +83,10 @@ def shortest_path(network, source_name, destination_name):
 	destination_node = network.get_node(destination_name)
 	current_node = source_node
 	unvisited_set = set()
+	distance = 0
+	path = []
 
- 	# # initilaising the node values
+ 	# # initialising the node values
 	for i in network.nodes:
 		if not(i == source_node):
 			i.value = [float("Inf"), None]
@@ -98,40 +100,28 @@ def shortest_path(network, source_name, destination_name):
 		# find outward connections
 		out_nodes = []
 		arc_w = []
-		ascending_node = []
-		ascending_list = []
 
 		# only thing updated is the node value
 		for j in current_node.arcs_out:
-			out_nodes.append(j.to_node) # list of outgoing nodes for current node
+			out_nodes.append(j.to_node.name) # list of outgoing nodes for current node
 			arc_w.append(j.weight) # weight of corresponding outgoing
-			j.to_node.value[0] = j.weight + current_node.value[0] # short distance to node -> arc.weight + pre node distance
-			j.to_node.value[-1] = j.from_node # which node it arrived from
+			if j.to_node.value[0] > (current_node.value[0]+j.weight):
+				j.to_node.value[0] = j.weight + current_node.value[0] # short distance to node -> arc.weight + pre node distance (update)
+				j.to_node.value[-1] = j.from_node # which node it arrived from
+			else:
+				j.to_node.value[-1] = j.from_node
 
 		# sub-section responsible for sorting out corresponding distances -> selects lowest value
-
-		# find index table of elements
-
-		ascending_node = [None]*len(out_nodes) # arranges in order to pick smallest
-		for k in range(len(out_nodes)):
-			ascending_list[k] = out_nodes[index[k]]
-
-		# sorting arc weight distances in ascending order
+		sorted_corresponding = [x for y, x in sorted(zip(arc_w, out_nodes))]
+		node_recieved = network.get_node(sorted_corresponding[0]) # recieve the lowest value - node.class
 
 		# smallest distance from current node - remove from unvisited set
 		# comparison list - smallest accumulated distance or arc weight
 		unvisited_set.remove(current_node.name)
+		current_node = node_recieved
+		distance = distance + current_node.value[0]
+		path.append(node_recieved.name)
 
-
-		# update the weights to outgoing vertices from source -(relaxing)
-		# after relaxing -> filling distance/nodes values
-		#  - current/source - removed from set - considered visited
-
-		# next vertex -> shortest from source vertex
-		# update cumulative distance from source into current node
-		# relax 
-
-		# values -[] get updated as lower distance is examined
 
 # These classes and methods are complete, do not modify their code
 
