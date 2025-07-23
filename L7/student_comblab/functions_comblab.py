@@ -83,8 +83,9 @@ def shortest_path(network, source_name, destination_name):
 	destination_node = network.get_node(destination_name)
 	current_node = source_node
 	unvisited_set = set()
-	visited_set = set()
+	distance = None # default
 	path = []
+	updated_point = None
 
  	# # initialising the node values
 	for i in network.nodes:
@@ -95,60 +96,53 @@ def shortest_path(network, source_name, destination_name):
 			source_node.value = [0,None]
 			unvisited_set.add(i.name)
 
-	while (not(current_node == destination_node) and not(destination_node not in unvisited_set)): # while condition not met
+	while not(len(unvisited_set) == 0): # while condition not met -> want to find for every shortest path
 		
-		# find outward connections : not(len(unvisited_set) == 0)
-		out_nodes = []
-		arc_w = []
+		# find outward connections : 
+		node_distance = []
+		revision_list = []
 
-		if current_node == source_node:
+		if not(current_node.arcs_out == []): # (+)
 			# only thing updated is the node value
 			for j in current_node.arcs_out:
-				out_nodes.append(j.to_node.name) # list of outgoing nodes for current node
-				arc_w.append(j.weight) # weight of corresponding outgoing
 				if j.to_node.value[0] > (current_node.value[0]+j.weight): # inital value + outward target arc weight is less than target arc current value
 					j.to_node.value[0] = j.weight + current_node.value[0] # short distance to node -> arc.weight + pre node distance (update)
-					j.to_node.value[-1] = j.from_node # which node it arrived from
+					j.to_node.value[-1] = j.from_node # which node it arrived from node -> node.class
 				else:
-					continue
+					continue 
 
-		elif current_node == None: # related to source node - connection -> first shortest connection out
-		
-			for j in current_node.arcs_out:
-				out_nodes.append(j.to_node.name) # list of outgoing nodes for current node
-				arc_w.append(j.weight) # weight of corresponding outgoing
-				if j.to_node.value[0] > (current_node.value[0]+j.weight): # inital value + outward target arc weight is less than target arc current value
-					j.to_node.value[0] = j.weight + current_node.value[0] # short distance to node -> arc.weight + pre node distance (update)
-					j.to_node.value[-1] = j.from_node # which node it arrived from
-				else:
-					continue
-		else:
-			for j in current_node.arcs_out:
-				out_nodes.append(j.to_node.name) # list of outgoing nodes for current node
-				arc_w.append(j.weight) # weight of corresponding outgoing
-				if j.to_node.value[0] > (current_node.value[0]+j.weight): # inital value + outward target arc weight is less than target arc current value
-					j.to_node.value[0] = j.weight + current_node.value[0] # short distance to node -> arc.weight + pre node distance (update)
-					j.to_node.value[-1] = j.from_node # which node it arrived from
-				else:
-					continue
+		else: # if very last point and no outgoing arcs (+)
+			unvisited_set.remove(current_node.name)
+			break
+
+		unvisited_set.remove(current_node.name)
+		for key in unvisited_set:
+			revision_list.append(key)
+			node_distance.append(network.get_node(key).value[0])
 
 		# sub-section responsible for sorting out corresponding distances -> selects lowest value
-		sorted_corresponding = [x for y, x in sorted(zip(arc_w, out_nodes))]
+		sorted_corresponding = [x for y, x in sorted(zip(node_distance, revision_list))]
 		node_recieved = network.get_node(sorted_corresponding[0]) # recieve the lowest value - node.class
 
 		# smallest distance from current node - remove from unvisited set
-		unvisited_set.remove(current_node.name)
-		visited_set.add(current_node.name)
-		distance = current_node.value[0] + node_recieved.value[0] # --
-		path.append(node_recieved.name) # --
+		
 		current_node = node_recieved
 
-	distance = destination_node.value[0]
-	while not(final_node == source_node):
-		path.append(destination_node.value[-1].name)
-		final_node = destination_node.value[-1]
+	if (not(destination_node.value[0] == float("Inf")) or len(unvisited_set) == 0): # assuming every node value is populated
+		cntr = 0 
+		while not(updated_point == source_node): # --
+			if cntr == 0:
+				path.append(destination_node.name)
+				updated_point = destination_node.value[-1]
+				cntr = cntr + 1
+			else:
+				path.append(updated_point.name)
+				updated_point = updated_point.value[-1]
 	
-	path.reverse()
+		path.append(source_node.name) 
+		path.reverse()
+		distance = destination_node.value[0]
+
 	return distance, path
 
 

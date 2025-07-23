@@ -47,7 +47,6 @@ def test_shortest_path_simple_A_to_F():
         print(network.nodes)
         print("Shortest path not found")
 
-    pass
 
 
 # test_search_value_negative_three()
