@@ -115,6 +115,7 @@ def shortest_path(network, source_name, destination_name):
 			unvisited_set.remove(current_node.name)
 			break
 
+		# Iterate through set and adjoing matching pairs of node names and values for sorting
 		unvisited_set.remove(current_node.name)
 		for key in unvisited_set:
 			revision_list.append(key)
@@ -125,7 +126,6 @@ def shortest_path(network, source_name, destination_name):
 		node_recieved = network.get_node(sorted_corresponding[0]) # recieve the lowest value - node.class
 
 		# smallest distance from current node - remove from unvisited set
-		
 		current_node = node_recieved
 
 	if (not(destination_node.value[0] == float("Inf")) or len(unvisited_set) == 0): # assuming every node value is populated
