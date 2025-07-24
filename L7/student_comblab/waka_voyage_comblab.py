@@ -14,5 +14,3 @@ travel_time, path = shortest_path(network, 'Taiwan', 'Hokianga')
 # does the source have to be == Taiwan?
 
 # check path pairs with the source being Taiwan always and destination varying -> sort out that list
-
-test = 5
