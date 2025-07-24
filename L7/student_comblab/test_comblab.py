@@ -36,7 +36,7 @@ def test_shortest_path_simple_A_to_F():
     network.read_network('simple_network.txt')
 
     # run the shortest path algorithm
-    distance, path = shortest_path(network, 'A', 'F')
+    distance, path = shortest_path(network, 'F', 'A')
 
     # TODO - include your appropriate test in Task 2
     if ( distance is not None and path is not None ): # path should return list of arcs from source to target

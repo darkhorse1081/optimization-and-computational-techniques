@@ -128,9 +128,11 @@ def shortest_path(network, source_name, destination_name):
 		# smallest distance from current node - remove from unvisited set
 		current_node = node_recieved
 
-	if (not(destination_node.value[0] == float("Inf")) or len(unvisited_set) == 0): # assuming every node value is populated
+	flag_internal = False # skips entire if block then flag remains true
+	if not(destination_node.value[0] == float("Inf")):
 		cntr = 0 
-		while not(updated_point == source_node): # --
+		flag_internal = True
+		while not(updated_point == source_node):
 			if cntr == 0:
 				path.append(destination_node.name)
 				updated_point = destination_node.value[-1]
@@ -138,7 +140,9 @@ def shortest_path(network, source_name, destination_name):
 			else:
 				path.append(updated_point.name)
 				updated_point = updated_point.value[-1]
-	
+	if not(flag_internal):
+		return distance, path
+	else:
 		path.append(source_node.name) 
 		path.reverse()
 		distance = destination_node.value[0]
