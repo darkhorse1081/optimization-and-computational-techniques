@@ -96,11 +96,12 @@ def shortest_path(network, source_name, destination_name):
 			source_node.value = [0,None]
 			unvisited_set.add(i.name)
 
-	while not(len(unvisited_set) == 0): # while condition not met -> want to find for every shortest path
+	while not(len(unvisited_set) == 0): # while continues assuming something in set -> want to find for every shortest path
 		
 		# find outward connections : 
 		node_distance = []
 		revision_list = []
+		verify = False
 
 		if not(current_node.arcs_out == []): # (+)
 			# only thing updated is the node value
@@ -110,16 +111,26 @@ def shortest_path(network, source_name, destination_name):
 					j.to_node.value[-1] = j.from_node # which node it arrived from node -> node.class
 				else:
 					continue 
-
+		
 		else: # if very last point and no outgoing arcs (+)
-			unvisited_set.remove(current_node.name)
-			break
-
+			if current_node.name in unvisited_set:
+				unvisited_set.remove(current_node.name) # ..
+				if len(unvisited_set) == 0: # assume end of path
+					break
+				else:
+					verify = True
+			# else - if palau then continues
+				
 		# Iterate through set and adjoing matching pairs of node names and values for sorting
-		unvisited_set.remove(current_node.name)
-		for key in unvisited_set:
-			revision_list.append(key)
-			node_distance.append(network.get_node(key).value[0])
+		if verify:
+			for key in unvisited_set:
+				revision_list.append(key)
+				node_distance.append(network.get_node(key).value[0])
+		else:
+			unvisited_set.remove(current_node.name)
+			for key in unvisited_set:
+				revision_list.append(key)
+				node_distance.append(network.get_node(key).value[0])
 
 		# sub-section responsible for sorting out corresponding distances -> selects lowest value
 		sorted_corresponding = [x for y, x in sorted(zip(node_distance, revision_list))]
