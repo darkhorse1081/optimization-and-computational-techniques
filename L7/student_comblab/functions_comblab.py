@@ -134,8 +134,11 @@ def shortest_path(network, source_name, destination_name):
 
 		# sub-section responsible for sorting out corresponding distances -> selects lowest value
 		sorted_corresponding = [x for y, x in sorted(zip(node_distance, revision_list))]
-		node_recieved = network.get_node(sorted_corresponding[0]) # recieve the lowest value - node.class
-
+		if len(sorted_corresponding) != 0:
+			node_recieved = network.get_node(sorted_corresponding[0]) # recieve the lowest value - node.class
+		else:
+			break
+		
 		# smallest distance from current node - remove from unvisited set
 		current_node = node_recieved
 
