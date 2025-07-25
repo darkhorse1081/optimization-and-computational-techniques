@@ -10,12 +10,6 @@ network.read_network('waka_voyage_network.txt')
 # TODO - your code here in Task 3
 travel_time, path = shortest_path(network, 'Taiwan', 'Hokianga')
 
-
-
-
-
-highest_time = []
-
 pair_recieved = []
 time_v2 = []
 
