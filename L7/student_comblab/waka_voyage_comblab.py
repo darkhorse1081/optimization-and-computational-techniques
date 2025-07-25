@@ -9,20 +9,42 @@ network.read_network('waka_voyage_network.txt')
 
 # TODO - your code here in Task 3
 travel_time, path = shortest_path(network, 'Taiwan', 'Hokianga')
+
+
 network_nodes = []
 list_times = []
 
+highest_time = []
+
+pair_recieved = []
+time_v2 = []
+
 # check path pairs with the source being Taiwan always and destination varying -> sort out that list
 # one source -> paired with all other destinations -> regardless in path or not ()
+
 for i in network.nodes:
      for j in network_nodes:
-          if i != j:
-               network_nodes.append((i,j))
-               list_times.append(shortest_path(network,i.name,j.name))
-          else:
-               continue
-          
-sorted_corresponding = [x for y, x in sorted(zip(node_distance, revision_list))]
-node_recieved = network.get_node(sorted_corresponding[0])
+          if i != j: # ignores similar value - i will assemble this into a function # --
+               test_time, test_path = shortest_path(network,i.name,j.name)
+               if test_time != None:
+                    network_nodes.append((i.name,j.name))
+                    list_times.append(test_time)
+               else:
+                    continue # there shortest paths
+          else: 
+               continue # continue to find non-matching pair
 
-# finding the greatest travle distance
+     sorted_corresponding = [x for y, x in sorted(zip(list_times, network_nodes))] # sorting out tuple pair w/ times
+     pair_recieved.append(sorted_corresponding[-1]) # takes the last value
+     time_review, path_review = shortest_path(network,pair_recieved[0],pair_recieved[-1])
+     time_v2.append(time_review) # -> for pair recieved end of j iteration
+
+sorted_corresponding2 = [m for n, m in sorted(zip(time_v2, pair_recieved))]
+highest_node_pair = sorted_corresponding[-1]
+
+time_highest, path_highest = shortest_path(network, highest_node_pair[0],highest_node_pair[-1])
+
+x = 5
+
+
+# finding the greatest travel distance
