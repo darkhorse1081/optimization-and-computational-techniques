@@ -1,4 +1,4 @@
-# ENGSCI233: Lab - Performance
+# ENGSCI: Lab - Performance
 
 # imports
 import numpy as np
