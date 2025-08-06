@@ -116,15 +116,43 @@ def matmul2(a, b):
 
 # TODO - complete in Task 1
 def profile_matmul(multiplications, n, matmul):
-    pass
+
+    # takes list of n
+    profiler_id = cProfile.Profile()
+    p_size = []
+
+    # logs data from n matrix dimensions - stores times in list to return
+    for i in n:
+        profiler_id.enable()
+        multiply_square_matrices(multiplications, i, matmul)
+        profiler_id.disable()
+
+        ps = pstats.Stats(profiler_id).sort_stats('tottime')
+        p_size.append(ps.total_tt)
+    
+    return p_size
+
 
 
 # TODO - complete in Task 1
 def plot_polynomial_performance(times, n):
+
     # create the empty figure
     f, ax = plt.subplots(1, 1)
 
+    logged_execution_time = np.log(times)
+    logged_size_of_problem = np.log(n)
+
+    z = np.polyfit(logged_size_of_problem, logged_execution_time, 1)
+    p = np.poly1d(z)
+
     # show the plot
+    ax.plot(logged_size_of_problem, logged_execution_time, 'kx')
+    ax.plot(logged_size_of_problem, p(logged_size_of_problem), label='Linear Fit', color='blue')
+    ax.set_title('profiler')
+    ax.legend(loc=2)
+    ax.set_xlabel('logged_problem_size log(N)')
+    ax.set_ylabel('logged_execution_time log(t/s)')
     plt.show()
 
 
