@@ -111,18 +111,29 @@ def matmul2(a, b):
         ValueError
             If inner dimensions of matrix product are inconsistent
     """
-    pass
+    # check dimension consistency precondition
+    if a.shape[1] != b.shape[0]:
+        raise ValueError('Dimension inconsistency: A must have the same number of columns as B has rows.')
+    
+    # compute matrix product as dot products of rows and columns
+    product = np.zeros((a.shape[0], b.shape[1]))
+    for i in range(product.shape[0]):
+        for j in range(product.shape[1]):
+            product[i, j] = np.dot(a[i,:],b[:,j])
+
+    return product
 
 
 # TODO - complete in Task 1
 def profile_matmul(multiplications, n, matmul):
 
     # takes list of n
-    profiler_id = cProfile.Profile()
     p_size = []
 
     # logs data from n matrix dimensions - stores times in list to return
     for i in n:
+        profiler_id = cProfile.Profile()
+
         profiler_id.enable()
         multiply_square_matrices(multiplications, i, matmul)
         profiler_id.disable()
