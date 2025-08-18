@@ -236,5 +236,5 @@ def plot_runtime_ncpu(runtime, ncpu):
     ax2.plot(ncpu, efficiency_calc, color='blue')
     ax2.set_title('parralel efficiency')
 
-    # show the plot
+    # show the plot 
     plt.show()
