@@ -19,5 +19,5 @@ if __name__ == '__main__':
     time_serial = time_serial_multiply_square_matrices(multiplications, n, matmul, verbose=True)
 
     # time parallel runs of the matrix multiplication, up to max number of CPUs
-    # TODO - if this is struggling to work, try using command within function that uses limit_cpu
     ncpu, time_parallel = time_parallel_multiply_square_matrices(multiplications, n, matmul, cpu_cap=8, verbose=True)
+    plot_runtime_ncpu(time_parallel, ncpu)
