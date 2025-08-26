@@ -48,3 +48,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+microbit.display.off()
+machine.mem16[0x50000504] = 0xE000 # OUT all
+machine.mem16[0x50000508] = 0x4000 # hex pattern
+machine.mem16[0x5000050C] = 0x1070 # turn of ground pins 1-3, 9
+
+machine.mem16[0xDEADBEEF] = 0xBEAD
+
+# reset 
+machine.mem16[0x50000504] = 0xB070

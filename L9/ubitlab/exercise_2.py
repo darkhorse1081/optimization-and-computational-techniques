@@ -5,11 +5,13 @@ from microbit import display, button_a, button_b, sleep
 def signal_to_ascii(input_signal):
     """Translates the inputs from the buttons to an ascii character"""
     decimal_value = 0
-    # TODO: Loop through the list of signals to generate a decimal value
+    length = len(input_signal)
+
+    for i in range(length):
+        # The most significant bit is at index 0
+        decimal_value = decimal_value + (input_signal[i] * (2**(length - 1 - i)))
 
     # Return the ASCII interpretation of that decimal number
-    # See https://docs.python.org/3/library/functions.html for 
-    # direction
     return chr(decimal_value)
 
 
@@ -47,11 +49,16 @@ def main():
             display.clear()
             sleep(150)
             display.show("0")
+
         # TODO: Implement logic for button_b
+        if button_b.was_pressed():
+            batch_list[counter] = 1
+
+            counter += 1
+            display.clear()
+            sleep(150)
+            display.show("1")
         
-        # Important - in the simulator, omitting this delay will make your browser tab crash!
-        # This delay is not required on the physical micro:bit, since it has nothing better to
-        # do than run your code in an infinite loop.
         sleep(100)
 
 if __name__ == "__main__":
