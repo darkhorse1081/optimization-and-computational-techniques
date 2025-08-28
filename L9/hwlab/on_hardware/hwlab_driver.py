@@ -22,11 +22,8 @@ def bits_to_hex_string(bit_list):
   Returns:
     A string representing the hexadecimal value, e.g., "0x1e0f".
   """
-  # Join the list of integers into a single binary string.
   binary_string = "".join(str(bit) for bit in bit_list)
-  # Convert the binary string to an integer (specifying base 2).
   integer_value = int(binary_string, 2)
-  # Convert the integer to a hexadecimal string.
   hex_value = hex(integer_value)
 
   return hex_value
