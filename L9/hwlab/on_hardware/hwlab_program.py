@@ -5,7 +5,7 @@ Moves a pixel around the display on a micro:bit.
 '''
 
 import microbit
-#TODO: import device driver
+import hwlab_driver
 
 while True:
     for n in range(25):
