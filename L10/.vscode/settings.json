@@ -1,0 +1,7 @@
+{
+     "python.testing.pytestArgs": [
+          "commlab"
+     ],
+     "python.testing.unittestEnabled": false,
+     "python.testing.pytestEnabled": true
+}

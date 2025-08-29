@@ -9,7 +9,7 @@ PAPER = microbit.Image('99999:90009:90009:90009:99999')
 SCISSORS = microbit.Image('99009:99090:00900:99090:99009')
 RPS = (b'R', b'P', b'S')
 
-MYID = b'00' # TODO: change this to be the same as your assigned micro:bit number
+MYID = b'2akfpmb013b' # TODO: change this to be the same as your assigned micro:bit number
 
 def choose_opponent():
     # """ Return the opponent id from button presses
@@ -57,9 +57,26 @@ def choose_play():
     #     A single-character byte string representing a move, 
     # as given in the RPS list at the top of the file.
     # """
-    #
-    # TODO: write code
-    return b''
+
+    choice = b''
+    set_count = 0
+
+    while microbit.button_b.was_pressed() == False:
+        microbit.sleep(100)
+
+        if microbit.button_a.was_pressed():
+             microbit.display.show(str(RPS[choice]))
+             choice = RPS[set_count]
+             set_count = set_count + 1
+             if set_count == len(RPS)-1:
+                set_count = 0
+
+        if microbit.button_b.was_pressed():
+             microbit.sleep(100)
+             microbit.display.show('k')
+             break
+        
+    return choice
 
 def send_choice(opponent_id, play, round_number):
     # """ Sends a message via the radio
