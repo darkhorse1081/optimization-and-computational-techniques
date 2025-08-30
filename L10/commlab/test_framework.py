@@ -1,9 +1,4 @@
 """
-OPTIONAL TODO: Testing
-
-This function implements testing that can (and should) be extended for the
-communications lab.
-
 This is primarily so you can execute unit tests on your code without needing
 to be a part of a network of devices.
 

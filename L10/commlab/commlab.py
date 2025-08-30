@@ -148,7 +148,7 @@ def parse_message(opponent_id, round_number):
     if not msg:
         return None
     
-    if (len(msg) <= 9) or (len(msg) < 6):
+    if (len(msg) <= 9) and (len(msg) >= 6):
         action = msg[4:5]
         if (MYID == msg[0:2] and opponent_id == msg[2:4]):
             if (action in RPS):
@@ -276,29 +276,34 @@ def main():
             message = parse_message(opponent_id, round_number)
             
             # TODO: if is a play
-            if False:
+            if message in RPS:
                 # resolve the match and display the result
                 result = resolve(choice, message)
-                
-                # TODO: update score
-
+                if result == 1:
+                    score += 1
+                    resolved = True        
                 # display the score
                 display_score(score)
+                continue
                 
             # TODO: if is acknowledgement
-            if False:
-                pass
+            if not(radio.get_last_out() == None):
+                acknowledged = True
+                continue
                 
             # TODO: handle situation if not acknowledged
-            if False:
-                pass
-                
+            microbit.sleep(3000)
+            if not ( acknowledged and utime.ticks_diff(utime.ticks_ms(),send_time) > 2000 ):
+                old_mesg = radio.get_last_out()
+                if old_mesg:
+                    radio.send_bytes(old_mesg)
+                   
         # TODO: Update round number
+        round_number += 1
 
 # Do not modify the below code, this makes sure your program runs properly!
 
 if __name__ == "__main__":
-    # main()
-    choose_play()
+    main()
     
     
