@@ -246,10 +246,7 @@ def display_score(score, times=3):
             microbit.sleep(333)
 
 def main():
-    # """ Main control loop"""
-    #
-    # TODO: fill in parts of code below as marked.
-    
+
     # set up the radio for a moderate range
     radio.config(power=6, queue=50)
     radio.on()
@@ -271,6 +268,7 @@ def main():
         acknowledged, resolved = (False, False)
         # passive waiting display
         microbit.display.show(microbit.Image.ALL_CLOCKS, wait=False, loop=True)
+        
         while not (acknowledged and resolved):
             # get a message from the radio
             message = parse_message(opponent_id, round_number)
