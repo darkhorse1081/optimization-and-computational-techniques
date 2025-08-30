@@ -9,7 +9,7 @@ PAPER = microbit.Image('99999:90009:90009:90009:99999')
 SCISSORS = microbit.Image('99009:99090:00900:99090:99009')
 RPS = (b'R', b'P', b'S')
 
-MYID = b'2akfpmb013b' # TODO: change this to be the same as your assigned micro:bit number
+MYID = b'4c' 
 
 def choose_opponent():
     # """ Return the opponent id from button presses
@@ -49,33 +49,34 @@ def choose_opponent():
     return bytes(''.join(hex(n)[-1] for n in num), 'UTF-8')
 
 def choose_play():
-    # """ Returns the play selected from button presses
+    # Returns the play selected from button presses
     #
     # Returns
     # -------
     # byte string:
     #     A single-character byte string representing a move, 
     # as given in the RPS list at the top of the file.
-    # """
+    # 
 
-    choice = b''
+    choice = None
     set_count = 0
 
     while microbit.button_b.was_pressed() == False:
         microbit.sleep(100)
-
+        microbit.display.show('x') # default display if nothing pressed yet
         if microbit.button_a.was_pressed():
-             microbit.display.show(str(RPS[choice]))
+             microbit.display.show(microbit.Image(RPS[set_count].decode('utf-8')))
              choice = RPS[set_count]
              set_count = set_count + 1
-             if set_count == len(RPS)-1:
+             if set_count == len(RPS):
                 set_count = 0
 
-        if microbit.button_b.was_pressed():
+        if microbit.button_b.was_pressed(): # confirmation
              microbit.sleep(100)
              microbit.display.show('k')
              break
-        
+    microbit.display.clear()
+
     return choice
 
 def send_choice(opponent_id, play, round_number):
@@ -95,9 +96,13 @@ def send_choice(opponent_id, play, round_number):
     # int:
     #     Time that the message was sent
     # """
-    #
-    # TODO: write code
-    return 0
+
+    msg1 = (opponent_id + MYID + play).decode()
+    msg2 = str(round_number)
+    radio.send(msg1+msg2)
+    send_time  = utime.ticks_ms()
+
+    return send_time
 
 def send_acknowledgement(opponent_id, round_number):
     # """ Sends an acknowledgement message
@@ -110,8 +115,11 @@ def send_acknowledgement(opponent_id, round_number):
     #     The round that is being played
     # """
     #
-    # TODO: write code
-    pass
+    msg = (opponent_id + MYID + b'X') +str(round_number).encode()
+    send_time  = utime.ticks_ms()
+    radio.send_bytes(msg)
+
+    return send_time
 
 def parse_message(opponent_id, round_number):
     # """ Receive and parse the next valid message
@@ -136,9 +144,33 @@ def parse_message(opponent_id, round_number):
     # the message is valid and contains a play (R, P, or S), using the round
     # number from the message.
     # """
-    #
-    # TODO: write code
-    return b''
+    msg = radio.receive_bytes()
+    if not msg:
+        return None
+    
+    if (len(msg) <= 9) or (len(msg) < 6):
+        action = msg[4:5]
+        if (MYID == msg[0:2] and opponent_id == msg[2:4]):
+            if (action in RPS):
+                received_rd = msg[5:len(msg)]
+                if received_rd == str(round_number).encode():
+                    # also updating for acknowledge
+                    send_acknowledgement(opponent_id, received_rd.decode())
+                elif received_rd < str(round_number).encode():
+                    send_acknowledgement(opponent_id, received_rd.decode())
+                    return None
+                else:
+                    return None
+            elif action == b'X':
+                return action
+            else:
+                return None
+        else:
+            return None
+    else:
+        return None
+    
+    return action
 
 def resolve(my, opp):
     # """ Returns the outcome of a rock-paper-scissors match
@@ -266,5 +298,7 @@ def main():
 # Do not modify the below code, this makes sure your program runs properly!
 
 if __name__ == "__main__":
-    main()
+    # main()
+    choose_play()
+    
     

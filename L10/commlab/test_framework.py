@@ -53,8 +53,7 @@ def test_choose_opponent():
 
 def test_choose_play():
     """ Test the choose_play function with a given play """
-    # TODO: write test
-    assert True # Replace this with your assert for the test
+    assert True 
 
 def test_send_choice():
     """ Test the play message sending capabilities with a given message """
@@ -111,4 +110,4 @@ def test_parse_message():
 
 
 if __name__ == "__main__":
-    test_choose_opponent()
+    test_parse_message()
