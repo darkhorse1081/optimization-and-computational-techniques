@@ -1,5 +1,5 @@
-import microbit # Do not change these to star imports, the test code neds them
-import utime    # like this to work properly!
+import microbit 
+import utime 
 import radio
 
 # Global constants
@@ -298,8 +298,6 @@ def main():
                    
         # TODO: Update round number
         round_number += 1
-
-# Do not modify the below code, this makes sure your program runs properly!
 
 if __name__ == "__main__":
     main()

@@ -31,7 +31,6 @@ Note: We need to heed the scope of the modules - we must call prototype.radio,
 instead of just radio, even though they point to the same module, because
 there is a prototype scope that contains its own radio module.
 
-Also note we have only tested happy paths (ideal/standard inputs) here.
 """
 def test_choose_opponent():
     """ Test the choose_opponent function with a random ID number """
